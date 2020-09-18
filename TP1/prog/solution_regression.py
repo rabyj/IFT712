@@ -23,9 +23,19 @@ class Regression:
 
         NOTE : En mettant phi_x = x, on a une fonction de base lineaire qui fonctionne pour une regression lineaire
         """
-        # AJOUTER CODE ICI
-        phi_x = x
-        return phi_x
+        # TODO : inclure x_0 = 1 pour chaque donnee dans la projection, lorsque le biais est inclus dans self.w, donc avoir tableau de taille M+1
+        # TODO make it work for m=0? use a warning? pt juste ignorer M=0? a voir avec correcteur. Commentaire dans entrainement dit que m=0 implique recherche hyperparam
+        try:
+            # on place vecteur 1D dans un tableau 2D
+            phi = x.reshape(-1, 1)
+        except AttributeError:
+            # erreur signifie problement qu'un int ou float a ete donnee
+            phi = np.array([[x]])
+
+        # creation d'un tableau 2D de taille NxM (x_0 = 1 non-inclus)
+        for i in range(2, self.M + 1):
+            phi = np.hstack((phi, (phi[:, 0] ** i).reshape((len(phi), 1))))
+        return phi
 
     def recherche_hyperparametre(self, X, t):
         """
@@ -37,8 +47,70 @@ class Regression:
         X: vecteur de donnees
         t: vecteur de cibles
         """
-        # AJOUTER CODE ICI
-        self.M = 1
+        N = len(X)
+        k = 10
+
+        if N < k:
+            raise AssertionError("Seulement {} valeurs pour validation-croisee {}-bloc. Impossible.".format(N, k))
+
+        # On melange les indices de X/t pour une selection aleatoire des donnees
+        melange = np.arange(0, N)
+        np.random.shuffle(melange)
+
+        # Liste de paires d'index permettant separation en k blocs
+        selection = self.separation_k_blocs(N, k)
+
+        # On scanne pour M = 1 à 10
+        erreurs_moyenne = []
+        for val_m in np.arange(1, 10, 1):
+            self.M = val_m
+            somme_err_valid = 0
+            
+            # On utilise chaque bloc séparément comme ensemble de validation
+            for bloc in np.arange(0, k, 1):
+                debut_valid, fin_valid = selection[bloc]
+                
+                # Listes des indices des donnees selectionnees
+                train_indexes = np.concatenate((melange[0:debut_valid], melange[fin_valid:N]))
+                valid_indexes = melange[debut_valid:fin_valid]
+
+                # Entrainement puis validation
+                self.entrainement(X[train_indexes], t[train_indexes])
+                somme_err_valid += self.erreur(t[valid_indexes], self.prediction(X[valid_indexes]))
+
+            erreurs_moyenne.append(somme_err_valid/k)
+
+        # l'erreur moyenne minimale determine le meilleur M
+        self.M = int(np.amin(erreurs_moyenne) + 1)
+
+    @staticmethod
+    def separation_k_blocs(N, k):
+        """Retourne la liste d'index permettant de separer un vecteur de taille N en k blocs."""
+        # On va avoir 'N%k' blocs de taille 'N//k + 1' et
+        # 'k - N%k' blocs de taille 'N//k'
+        taille_bloc = N // k
+        nb_blocs_diff = N % k
+        
+        # Creation de la liste de selection d'index (index_debut, index_fin)
+        bloc_courant = 0
+        debut = 0
+        selection = []
+
+        # blocs de taille 'N//k + 1'
+        while bloc_courant < nb_blocs_diff:
+            fin = debut + taille_bloc + 1
+            selection.append((debut, fin))
+            debut = fin
+            bloc_courant += 1
+
+        # blocs de taille 'N//k'
+        while bloc_courant < k:
+            fin = debut + taille_bloc
+            selection.append((debut, fin))
+            debut = fin
+            bloc_courant += 1
+
+        return selection
 
     def entrainement(self, X, t, using_sklearn=False):
         """
