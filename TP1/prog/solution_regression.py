@@ -25,17 +25,22 @@ class Regression:
 
         NOTE : En mettant phi_x = x, on a une fonction de base lineaire qui fonctionne pour une regression lineaire
         """
-        # TODO : inclure x_0 = 1 pour chaque donnee dans la projection, lorsque le biais est inclus dans self.w, donc avoir tableau de taille M+1
+        # on place un vecteur 1D ou un scalaire dans un tableau 2D
         try:
-            # on place vecteur 1D dans un tableau 2D
-            phi = x.reshape(-1, 1)
+            if np.isscalar(x):
+                phi = np.array([[x]])
+            else:
+                phi = x.reshape(-1, 1)
         except AttributeError:
-            # erreur signifie problement qu'un int ou float a ete donnee
-            phi = np.array([[x]])
+            raise ValueError("L'entree doit etre un scalaire ou un vecteur 1D numpy.")
 
-        # creation d'un tableau 2D de taille NxM (x_0 = 1 non-inclus)
+        # creation d'un tableau 2D de taille NxM+1
         for i in range(2, self.M + 1):
-            phi = np.hstack((phi, (phi[:, 0] ** i).reshape((len(phi), 1))))
+            phi = np.hstack((phi, (phi[:, 0] ** i).reshape((phi.shape[0], 1))))
+
+        # ajout du biais
+        phi = np.column_stack((np.full((phi.shape[0], 1), 1), phi))
+
         return phi
 
     def recherche_hyperparametre(self, X, t):
@@ -92,7 +97,7 @@ class Regression:
             erreurs_moyenne.append(somme_err_valid/k)
 
         # l'erreur moyenne minimale determine le meilleur M
-        self.M = int(np.amin(erreurs_moyenne) + 1)
+        self.M = int(np.argmin(erreurs_moyenne) + 1)
 
     @staticmethod
     def separation_k_blocs(N, k):
@@ -148,12 +153,20 @@ class Regression:
 
         NOTE IMPORTANTE : lorsque self.M <= 0, il faut trouver la bonne valeur de self.M
         """
-        #AJOUTER CODE ICI
         if self.M <= 0:
             self.recherche_hyperparametre(X, t)
 
         phi_x = self.fonction_base_polynomiale(X)
-        self.w = [0, 1]
+
+        if using_sklearn:
+            reg = linear_model.Ridge(alpha=self.lamb)
+            fit = reg.fit(phi_x, t)
+            self.w = fit.coef_
+        else:
+            # A w = B
+            A = self.lamb * np.identity(phi_x.shape[1]) + np.dot(phi_x.T, phi_x)
+            B = np.dot(phi_x.T, t)
+            self.w = np.linalg.solve(A, B)
 
     def prediction(self, x):
         """
@@ -164,8 +177,7 @@ class Regression:
         a prealablement ete appelee. Elle doit utiliser le champs ``self.w``
         afin de calculer la prediction y(x,w) (equation 3.1 et 3.3).
         """
-        # AJOUTER CODE ICI
-        return 0.5
+        return np.sum(self.w * self.fonction_base_polynomiale(x))
 
     @staticmethod
     def erreur(t, prediction):
@@ -173,5 +185,4 @@ class Regression:
         Retourne l'erreur de la difference au carre entre
         la cible ``t`` et la prediction ``prediction``.
         """
-        # AJOUTER CODE ICI
-        return 0.0
+        return np.sum((t-prediction)**2)
