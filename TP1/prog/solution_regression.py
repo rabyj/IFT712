@@ -19,7 +19,11 @@ class Regression:
     def fonction_base_polynomiale(self, x):
         """
         Fonction de base qui projette la donnee x vers un espace polynomial tel que mentionné au chapitre 3.
+<<<<<<< HEAD
         --> Si x est un scalaire, alors phi_x sera un vecteur de longueur self.M + 1 (incluant le biais) :
+=======
+        --> Si x est un scalaire, alors phi_x sera un vecteur de longueur self.M + 1 (incluant le biais) : 
+>>>>>>> dev
         (1, x^1,x^2,...,x^self.M)
         --> Si x est un vecteur de N scalaires, alors phi_x sera un tableau 2D de taille Nx(M+1) (incluant le biais)
 
@@ -43,15 +47,24 @@ class Regression:
         Trouver la meilleure valeur pour l'hyper-parametre self.M (pour un lambda fixe donné en entrée).
 
         Option 1
+<<<<<<< HEAD
         Validation croisée de type "k-fold" avec k=10. La méthode array_split de numpy peut être utlisée
         pour diviser les données en "k" parties. Si le nombre de données en entrée N est plus petit que "k",
+=======
+        Validation croisée de type "k-fold" avec k=10. La méthode array_split de numpy peut être utlisée 
+        pour diviser les données en "k" parties. Si le nombre de données en entrée N est plus petit que "k", 
+>>>>>>> dev
         k devient égal à N. Il est important de mélanger les données ("shuffle") avant de les sous-diviser
         en "k" parties.
 
         Option 2
         Sous-échantillonage aléatoire avec ratio 80:20 pour Dtrain et Dvalid, avec un nombre de répétition k=10.
 
+<<<<<<< HEAD
         Note:
+=======
+        Note: 
+>>>>>>> dev
 
         Le resultat est mis dans la variable self.M
 
