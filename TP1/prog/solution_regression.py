@@ -67,66 +67,40 @@ class Regression:
         k = 10
 
         if N < k:
-            raise AssertionError("Seulement {} valeurs pour validation-croisee {}-bloc. Impossible.".format(N, k))
+            k = N
 
-        # On melange les indices de X/t pour une selection aleatoire des donnees
-        melange = np.arange(0, N)
-        np.random.shuffle(melange)
+        # Melange ensemble
+        rng_state = np.random.get_state()
+        np.random.shuffle(X)
+        np.random.set_state(rng_state)
+        np.random.shuffle(t)
 
-        # Liste de paires d'index permettant separation en k blocs
-        selection = self.separation_k_blocs(N, k)
+        # split
+        X_split = np.array_split(X, k)
+        t_split = np.array_split(t, k)
 
-        # On scanne pour M = 1 à 10
-        erreurs_moyenne = []
-        for val_m in np.arange(1, 10, 1):
+        # On scanne pour M = 1 à max_m
+        max_m = 6
+        erreurs_moyenne = np.full(max_m, 0, dtype=float)
+        for val_m in np.arange(1, max_m+1, 1):
             self.M = val_m
             somme_err_valid = 0
 
-            # On utilise chaque bloc séparément comme ensemble de validation
+            # On utilise chaque bloc separement comme ensemble de validation
             for bloc in np.arange(0, k, 1):
-                debut_valid, fin_valid = selection[bloc]
+                X_train = np.concatenate((X_split[0:bloc] + X_split[bloc+1:k]))
+                X_valid = X_split[bloc]
 
-                # Listes des indices des donnees selectionnees
-                train_indexes = np.concatenate((melange[0:debut_valid], melange[fin_valid:N]))
-                valid_indexes = melange[debut_valid:fin_valid]
+                t_train = np.concatenate((t_split[0:bloc] + t_split[bloc+1:k]))
+                t_valid = t_split[bloc]
 
                 # Entrainement puis validation
-                self.entrainement(X[train_indexes], t[train_indexes])
-                somme_err_valid += self.erreur(t[valid_indexes], self.prediction(X[valid_indexes]))
+                self.entrainement(X_train, t_train)
+                somme_err_valid += self.erreur(t_valid, self.prediction(X_valid))
 
-            erreurs_moyenne.append(somme_err_valid/k)
+            erreurs_moyenne[val_m-1] = somme_err_valid/k
 
-        # l'erreur moyenne minimale determine le meilleur M
         self.M = int(np.argmin(erreurs_moyenne) + 1)
-
-    @staticmethod
-    def separation_k_blocs(N, k):
-        """Retourne la liste d'index permettant de separer un vecteur de taille N en k blocs."""
-        # On va avoir 'N%k' blocs de taille 'N//k + 1' et
-        # 'k - N%k' blocs de taille 'N//k'
-        taille_bloc = N // k
-        nb_blocs_diff = N % k
-
-        # Creation de la liste de selection d'index (index_debut, index_fin)
-        bloc_courant = 0
-        debut = 0
-        selection = []
-
-        # blocs de taille 'N//k + 1'
-        while bloc_courant < nb_blocs_diff:
-            fin = debut + taille_bloc + 1
-            selection.append((debut, fin))
-            debut = fin
-            bloc_courant += 1
-
-        # blocs de taille 'N//k'
-        while bloc_courant < k:
-            fin = debut + taille_bloc
-            selection.append((debut, fin))
-            debut = fin
-            bloc_courant += 1
-
-        return selection
 
     def entrainement(self, X, t, using_sklearn=False):
         """
@@ -177,7 +151,7 @@ class Regression:
         a prealablement ete appelee. Elle doit utiliser le champs ``self.w``
         afin de calculer la prediction y(x,w) (equation 3.1 et 3.3).
         """
-        return np.sum(self.w * self.fonction_base_polynomiale(x))
+        return np.sum(self.w * self.fonction_base_polynomiale(x), axis=1)
 
     @staticmethod
     def erreur(t, prediction):
