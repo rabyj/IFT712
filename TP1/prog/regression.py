@@ -16,7 +16,12 @@ def warning(erreur_test, erreur_apprentissage, bruit):
     erreur_apprentissage: erreur obtenue sur l'ensemble d'apprentissage
     bruit: magnitude du bruit
     """
-    # AJOUTER CODE ICI
+    # Criteres empirique determine avec bruit de 0 a 2 pour bcp donnees entrainement VS peu
+    if erreur_test - erreur_apprentissage > 1.5 and bruit < 2:
+        print("---AVERTISSEMENT : il y a une possibilité de sur-apprentissage---\n")
+    elif erreur_apprentissage > 0.5 and erreur_test > 0.5 and erreur_test > bruit**2:
+        print("---AVERTISSEMENT : il y a une possibilité de sous-apprentissage---\n")
+
 
 ################################
 # Execution en tant que script 
@@ -36,7 +41,7 @@ def main():
         print("\t nb_train: nombre de donnees d'entrainement")
         print("\t nb_test: nombre de donnees de test")
         print("\t bruit: amplitude du bruit appliqué aux données")
-        print("\t M: degré du polynome de la fonction de base (recherche d'hyperparametre lorsque M<0) ")
+        print("\t M: degré du polynome de la fonction de base (recherche d'hyperparametre lorsque M<=0) ")
         print("\t lambda: lambda utilisé par le modele de Ridge\n")
         print(" exemple: python3 regression.py 1 sin 20 20 0.3 10 0.001\n")
         return
@@ -79,7 +84,7 @@ def main():
     predictions_range = np.array([regression.prediction(x) for x in np.arange(0, 1, 0.01)])
     gestionnaire_donnees.afficher_donnees_et_modele(np.arange(0, 1, 0.01), predictions_range, False)
 
-    if m >= 0:
+    if m > 0:
         plt.suptitle('Resultat SANS recherche d\'hyperparametres')
     else:
         plt.suptitle('Resultat AVEC recherche d\'hyperparametres')

@@ -2,7 +2,7 @@
 
 #####
 # Joanny Raby (15062245)
-# Dona Chadid ()
+# Dona Chadid (20102835)
 ###
 
 import numpy as np
@@ -80,7 +80,7 @@ class Regression:
         t_split = np.array_split(t, k)
 
         # On scanne pour M = 1 à max_m
-        max_m = 6
+        max_m = 40
         erreurs_moyenne = np.full(max_m, 0, dtype=float)
         for val_m in np.arange(1, max_m+1, 1):
             self.M = val_m
