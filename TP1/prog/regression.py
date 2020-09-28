@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+#####
+# Joanny Raby (15062245)
+# Dona Chadid (20102835)
+###
+
 import numpy as np
 import sys
 import solution_regression as sr
