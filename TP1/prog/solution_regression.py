@@ -133,9 +133,10 @@ class Regression:
         phi_x = self.fonction_base_polynomiale(X)
 
         if using_sklearn:
-            reg = linear_model.Ridge(alpha=self.lamb)
-            fit = reg.fit(phi_x, t)
-            self.w = fit.coef_
+            reg = linear_model.Ridge(alpha=self.lamb, fit_intercept=True)
+            reg.fit(phi_x, t)
+            self.w = reg.coef_
+            self.w[0] = reg.intercept_
         else:
             # A w = B
             A = self.lamb * np.identity(phi_x.shape[1]) + np.dot(phi_x.T, phi_x)
