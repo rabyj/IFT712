@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
 #####
-# Vos Noms (VosMatricules) .~= À MODIFIER =~.
-####
+# Joanny Raby (15062245)
+# Dona Chadid (20102835)
+###
 
 import numpy as np
 from sklearn.linear_model import Perceptron
@@ -72,7 +73,10 @@ class ClassifieurLineaire:
 
         else:  # Perceptron + SGD [sklearn] + learning rate = 0.001 + penalty 'l2' voir http://scikit-learn.org/
             print('Perceptron [sklearn]')
-            # AJOUTER CODE ICI
+            perceptron = Perceptron(penalty="l2", alpha=self.lamb, max_iter=1000, eta0=0.001)
+            perceptron.fit(x_train, t_train)
+            self.w = perceptron.coef_[0]
+            self.w_0 = perceptron.intercept_[0]
 
         print('w = ', self.w, 'w_0 = ', self.w_0, '\n')
 
@@ -87,8 +91,8 @@ class ClassifieurLineaire:
         a préalablement été appelée. Elle doit utiliser les champs ``self.w``
         et ``self.w_0`` afin de faire cette classification.
         """
-        # AJOUTER CODE ICI
-        return 0
+        predict = np.dot(self.w, x) + self.w_0
+        return int(predict > 0)
 
     @staticmethod
     def erreur(t, prediction):
@@ -97,8 +101,7 @@ class ClassifieurLineaire:
         1. si la cible ``t`` et la prédiction ``prediction``
         sont différentes, 0. sinon.
         """
-        # AJOUTER CODE ICI
-        return 0
+        return int(not(t == prediction))
 
     def afficher_donnees_et_modele(self, x_train, t_train, x_test, t_test):
         """

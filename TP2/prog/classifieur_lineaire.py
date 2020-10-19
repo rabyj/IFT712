@@ -17,7 +17,7 @@ import gestion_donnees as gd
 def main():
 
     if len(sys.argv) < 7:
-        usage = "\n Usage: python classifieur.py method nb_train nb_test lambda bruit corruption don_ab\
+        usage = "\n Usage: python classifieur.py method nb_train nb_test lambda bruit don_ab\
         \n\n\t method : 1 => Classification generative\
         \n\t method : 2 => Perceptron + SDG \n\t method : 3 => Perceptron + SDG [sklearn]\
         \n\t nb_train, nb_test : nombre de donnees d'entrainement et de test\
