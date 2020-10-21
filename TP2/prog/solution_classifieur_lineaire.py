@@ -65,7 +65,33 @@ class ClassifieurLineaire:
         """
         if self.methode == 1:  # Classification generative
             print('Classification generative')
-            # AJOUTER CODE ICI
+
+            # separate class c1 and c2 data
+            x_c1 = np.array([x for i, x in enumerate(x_train) if t_train[i] == 1])
+            x_c2 = np.array([x for i, x in enumerate(x_train) if t_train[i] == 0])
+
+            # class c1 ratio
+            p = len(x_c1) / len(x_train)
+
+            # centers of mass
+            mu_1 = np.average(x_c1, axis=0)
+            mu_2 = np.average(x_c2, axis=0)
+
+            # distances to centers
+            dist_1 = x_c1 - mu_1
+            dist_2 = x_c2 - mu_2
+
+            # covariance matrix + lambda * I
+            sigma = (1/len(x_train)) * (np.dot(dist_1.T, dist_1) + np.dot(dist_2.T, dist_2))
+            sigma = sigma + self.lamb * np.identity(len(mu_1))
+
+            s_inv = np.linalg.inv(sigma)
+            self.w = np.dot(s_inv, (mu_1 - mu_2))
+            self.w_0 = (
+                np.dot(np.dot(mu_2.T, s_inv), mu_2)/2 -
+                np.dot(np.dot(mu_1.T, s_inv), mu_1)/2 +
+                np.log(p/(1-p))
+                )
 
         elif self.methode == 2:  # Perceptron + SGD, learning rate = 0.001, nb_iterations_max = 1000
             print('Perceptron')
