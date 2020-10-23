@@ -105,9 +105,9 @@ class ClassifieurLineaire:
             for _ in range(iterations):
                 for x, z in zip(x_train, t_train):
                     # calculating the sign of y
-                    sign = ClassifieurLineaire.prediction(self, x)
+                    sign = self.prediction(x)
                     # get error
-                    error = ClassifieurLineaire.erreur(z, sign)
+                    error = self.erreur(z, sign)
                     # y = w*x
                     y = np.dot(self.w.T, x) + self.w_0
                     # Is it a misclassification?
