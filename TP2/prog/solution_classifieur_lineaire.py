@@ -95,7 +95,26 @@ class ClassifieurLineaire:
 
         elif self.methode == 2:  # Perceptron + SGD, learning rate = 0.001, nb_iterations_max = 1000
             print('Perceptron')
-            # AJOUTER CODE ICI
+            iterations = 1000
+            eta0 = 0.001
+
+            predict_to_sign = {1 : 1, 0 : -1}
+
+            for _ in range(iterations):
+
+                error_during_iteration = False
+                for x, t in zip(x_train, t_train):
+
+                    predict = self.prediction(x)
+                    is_error = self.erreur(t, predict)
+
+                    if is_error: # gradient descent
+                        error_during_iteration = True
+                        self.w += eta0 * predict_to_sign[t] * x
+                        self.w_0 += eta0 * predict_to_sign[t]
+
+                if not error_during_iteration:
+                    break
 
         else:  # Perceptron + SGD [sklearn] + learning rate = 0.001 + penalty 'l2' voir http://scikit-learn.org/
             print('Perceptron [sklearn]')
