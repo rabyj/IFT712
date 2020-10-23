@@ -98,21 +98,22 @@ class ClassifieurLineaire:
             # AJOUTER CODE ICI
             
             iterations = 1000
-            self.w = np.random.rand(len(x_train[0])+1)
-            X = np.c_[np.ones(x_train.shape[0]), x_train]
-            
-            predict = lambda x: 0 if x < 0 else 1
-            for t in range(iterations):
-                for x, z in zip(X, t_train):
-                    # get sign of y
-                    sign = predict(np.dot(self.w.T, x))
+            alpha = 0.001
+            self.w = np.random.rand(len(x_train[0]))
+            self.w_0 = 1
+
+            for _ in range(iterations):
+                for x, z in zip(x_train, t_train):
+                    # calculating the sign of y
+                    sign = ClassifieurLineaire.prediction(self, x)
                     # get error
-                    error = z - sign
+                    error = ClassifieurLineaire.erreur(z, sign)
+                    # y = w*x
+                    y = np.dot(self.w.T, x) + self.w_0
                     # Is it a misclassification?
-                    if np.dot(np.dot(self.w.T, x),error) < 0:
+                    if np.dot(y,error) < 0:
                         self.w += self.lamb * np.dot(x.T, error)   
-            
-            self.w_0, self.w = self.w[0], self.w[1:]
+                        self.w_0 += self.lamb * error
 
         else:  # Perceptron + SGD [sklearn] + learning rate = 0.001 + penalty 'l2' voir http://scikit-learn.org/
             print('Perceptron [sklearn]')
