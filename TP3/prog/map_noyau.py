@@ -18,7 +18,7 @@ class MAPnoyau:
         sigma_square: paramètre du noyau rbf
         b, d: paramètres du noyau sigmoidal
         M,c: paramètres du noyau polynomial
-        noyau: rbf, lineaire, olynomial ou sigmoidal
+        noyau: rbf, lineaire, polynomial ou sigmoidal
         """
         self.lamb = lamb
         self.a = None
@@ -29,9 +29,7 @@ class MAPnoyau:
         self.d = d
         self.noyau = noyau
         self.x_train = None
-
-        
-
+    
     def entrainement(self, x_train, t_train):
         """
         Entraîne une méthode d'apprentissage à noyau de type Maximum a
@@ -53,6 +51,34 @@ class MAPnoyau:
         """
         #AJOUTER CODE ICI
         
+        I = np.identity(x_train.shape[0])
+        
+        # generate Gram matrix
+        K = self.Gram(x_train, x_train)
+                    
+        # a=(K + λI)−1 t
+        self.a = np.dot(np.linalg.inv(K + self.lamb * I), t_train)
+        self.x_train = x_train
+    
+    def Gram(self, x, y):
+        
+        if self.noyau == "linear": # 𝑘(𝑥,𝑥′)=𝑥.T 𝑥′
+            K = x.dot(y.T)
+            
+        elif self.noyau == "polynomial": # 𝑘(𝑥,𝑥′)=(𝑥.T 𝑥′+𝑐)**𝑀
+            K = (x.dot(y.T) + self.c) ** self.M
+            
+        elif self.noyau == "rbf": # 𝑘(𝑥,𝑥′)=exp⁡(−‖𝑥−𝑥′‖**2 / 2 * 𝜎**2)
+            K = np.zeros((x.shape[0], x.shape[0]))
+            for i in range(x.shape[0]):
+                for j in range(y.shape[0]):
+                    K[i,j] = np.exp(-np.linalg.norm(x[i] - y[j])**2 / (2 * self.sigma_square))
+        
+        else: # 𝑘(𝑥,𝑥′)=tanh(𝑏𝑥𝑇𝑥′+𝑑).
+            K = np.tanh(self.b * x.dot(y.T) + self.d)
+            
+        return K
+        
     def prediction(self, x):
         """
         Retourne la prédiction pour une entrée representée par un tableau
@@ -67,7 +93,10 @@ class MAPnoyau:
         sinon
         """
         #AJOUTER CODE ICI
-        return 0
+        
+        k = self.Gram(x, self.x_train)
+        predict = np.dot(k, self.a)
+        return int(predict > 0.5)
 
     def erreur(self, t, prediction):
         """
@@ -75,7 +104,7 @@ class MAPnoyau:
         la cible ``t`` et la prédiction ``prediction``.
         """
         # AJOUTER CODE ICI
-        return 0.
+        return (t-prediction)**2
 
     def validation_croisee(self, x_tab, t_tab):
         """
