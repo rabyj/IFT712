@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 #####
-# Vos Noms (Vos Matricules) .~= À MODIFIER =~.
+# Joanny Raby (15062245)
+# Dona Chadid (20102835)
 ###
 
 import numpy as np
