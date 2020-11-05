@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 
 #####
+<<<<<<< HEAD
 # VotreNom (VotreMatricule) .~= À MODIFIER =~.
+=======
+# Joanny Raby (15062245)
+# Dona Chadid (20102835)
+>>>>>>> dev
 ###
 
 import numpy as np
