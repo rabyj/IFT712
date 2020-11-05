@@ -18,11 +18,7 @@ class MAPnoyau:
         sigma_square: paramètre du noyau rbf
         b, d: paramètres du noyau sigmoidal
         M,c: paramètres du noyau polynomial
-<<<<<<< HEAD
         noyau: rbf, lineaire, polynomial ou sigmoidal
-=======
-        noyau: rbf, lineaire, olynomial ou sigmoidal
->>>>>>> dev
         """
         self.lamb = lamb
         self.a = None
@@ -33,13 +29,7 @@ class MAPnoyau:
         self.d = d
         self.noyau = noyau
         self.x_train = None
-<<<<<<< HEAD
     
-=======
-
-        
-
->>>>>>> dev
     def entrainement(self, x_train, t_train):
         """
         Entraîne une méthode d'apprentissage à noyau de type Maximum a
@@ -61,7 +51,6 @@ class MAPnoyau:
         """
         #AJOUTER CODE ICI
         
-<<<<<<< HEAD
         I = np.identity(x_train.shape[0])
         
         # generate Gram matrix
@@ -90,8 +79,6 @@ class MAPnoyau:
             
         return K
         
-=======
->>>>>>> dev
     def prediction(self, x):
         """
         Retourne la prédiction pour une entrée representée par un tableau
@@ -106,14 +93,10 @@ class MAPnoyau:
         sinon
         """
         #AJOUTER CODE ICI
-<<<<<<< HEAD
         
         k = self.Gram(x, self.x_train)
         predict = np.dot(k, self.a)
         return int(predict > 0.5)
-=======
-        return 0
->>>>>>> dev
 
     def erreur(self, t, prediction):
         """
@@ -121,11 +104,7 @@ class MAPnoyau:
         la cible ``t`` et la prédiction ``prediction``.
         """
         # AJOUTER CODE ICI
-<<<<<<< HEAD
         return (t-prediction)**2
-=======
-        return 0.
->>>>>>> dev
 
     def validation_croisee(self, x_tab, t_tab):
         """
