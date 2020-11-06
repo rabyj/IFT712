@@ -50,18 +50,19 @@ class MAPnoyau:
         d'apprentissage dans ``self.x_train``
         """
         I = np.identity(x_train.shape[0])
+        self.x_train = x_train
 
         # generate Gram matrix
-        K = self._gram(x_train, x_train)
+        K = self._apply_kernel(x_train, x_train)
 
         # a=(K + λI)−1 t
         self.a = np.dot(np.linalg.inv(K + self.lamb * I), t_train)
-        self.x_train = x_train
 
-    def _gram(self, x, y):
-        """Compute the kernel function on data arrays x and y. Only takes 2D Numpy arrays.
-        
-        If it's used for prediction, the self.x_train needs to be y.
+    def _apply_kernel(self, x, y):
+        """Compute the kernel function on data arrays x and y. Only takes 
+        2D Numpy arrays. Returns the Gram matrix if x is y.
+        To use for prediction, use x=self.x_train and y=np.array([x]),
+        where x is only one data points.
         """
         if self.noyau == "lineaire": # 𝑘(𝑥,𝑥′)=𝑥.T 𝑥′
             K = x.dot(y.T)
@@ -70,23 +71,21 @@ class MAPnoyau:
             K = (x.dot(y.T) + self.c) ** self.M
 
         elif self.noyau == "rbf": # 𝑘(𝑥,𝑥′)=exp(−‖𝑥−𝑥′‖**2 / 2 * 𝜎**2)
-            K = np.zeros((x.shape[0], y.shape[0]))
-
             # complete Gram matrix case (result has shape nxn)
-            if x.shape == y.shape :
-                for i in range(x.shape[0]):
-                    for j in range(y.shape[0]):
-                        if j >= i :
-                            K[i,j] = np.exp(-np.linalg.norm(x[i] - y[j])**2 / (2 * self.sigma_square**2))
-                K = np.maximum(K, K.T)
-            # prediction case (result has shape nx1)
+            # using ||x-y||^2 = ||x||^2 + ||y||^2 - 2 * x^T * y
+            # inspired by https://stackoverflow.com/questions/47271662/what-is-the-fastest-way-to-compute-an-rbf-kernel-in-python
+            if x is y :
+                x_norm = np.sum(x**2, axis=-1) 
+                K = np.exp(- (x_norm[:,None] + x_norm[None,:] - 2 * np.dot(x, x.T)) / (2 * self.sigma_square**2))
+            # prediction case, k(y) (result has shape nx1)
             else:
-                for i in range(x.shape[0]):
-                    for j in range(y.shape[0]):
-                        K[i,j] = np.exp(-np.linalg.norm(x[i] - y[j])**2 / (2 * self.sigma_square**2))
+                K = np.exp(-np.linalg.norm(x-y, axis=1)**2 / (2 * self.sigma_square**2))
 
-        else: # 𝑘(𝑥,𝑥′)=tanh(𝑏𝑥𝑇𝑥′+𝑑).
+        elif self.noyau == "sigmoidal" : # 𝑘(𝑥,𝑥′)=tanh(𝑏𝑥𝑇𝑥′+𝑑).
             K = np.tanh(self.b * x.dot(y.T) + self.d)
+
+        else:
+            raise ValueError("{} n'est pas un noyau valide. Voir l'aide.".format(self.noyau))
 
         return K
 
@@ -103,7 +102,7 @@ class MAPnoyau:
         classification binaire, la prediction est +1 lorsque y(x)>0.5 et 0
         sinon
         """
-        k = self._gram(self.x_train, np.array([x]))
+        k = self._apply_kernel(self.x_train, np.array([x]))
         predict = np.dot(k.T, self.a)
         return int(predict > 0.5)
 
