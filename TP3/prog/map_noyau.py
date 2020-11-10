@@ -7,6 +7,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+from tqdm import tqdm
 
 
 class MAPnoyau:
@@ -76,10 +77,10 @@ class MAPnoyau:
             # inspired by https://stackoverflow.com/questions/47271662/what-is-the-fastest-way-to-compute-an-rbf-kernel-in-python
             if x is y :
                 x_norm = np.sum(x**2, axis=-1) 
-                K = np.exp(- (x_norm[:,None] + x_norm[None,:] - 2 * np.dot(x, x.T)) / (2 * self.sigma_square**2))
+                K = np.exp(- (x_norm[:,None] + x_norm[None,:] - 2 * np.dot(x, x.T)) / (2 * self.sigma_square))
             # prediction case, k(y) (result has shape nx1)
             else:
-                K = np.exp(-np.linalg.norm(x-y, axis=1)**2 / (2 * self.sigma_square**2))
+                K = np.exp(-np.linalg.norm(x-y, axis=1)**2 / (2 * self.sigma_square))
 
         elif self.noyau == "sigmoidal" : # 𝑘(𝑥,𝑥′)=tanh(𝑏𝑥𝑇𝑥′+𝑑).
             K = np.tanh(self.b * x.dot(y.T) + self.d)
@@ -125,7 +126,107 @@ class MAPnoyau:
         de 0.000000001 à 2, les valeurs de ``self.c`` de 0 à 5, les valeurs
         de ''self.b'' et ''self.d'' de 0.00001 à 0.01 et ``self.M`` de 2 à 6
         """
-        raise NotImplementedError
+        N = len(x_tab)
+        k = 10
+
+        if N < k:
+            k = N
+
+        # shuffle
+        rng_state = np.random.get_state()
+        np.random.shuffle(x_tab)
+        np.random.set_state(rng_state)
+        np.random.shuffle(t_tab)
+
+        # split
+        X_split = np.array_split(x_tab, k)
+        t_split = np.array_split(t_tab, k)
+
+        # initiate lists for parameters' tests
+        parms1 = [] 
+        parms2 = []
+        parms3 = []
+        
+        # initiate list of errors
+        error = []
+        
+        print("k-fold cross validation...")
+        if self.noyau == "polynomial": # 𝑐 & 𝑀 & lamb
+
+            for l in tqdm(np.arange(1e-09,2,0.07)):
+                for c in np.arange(0,5,0.1):
+                    for m in np.arange(2,6,1):
+                        
+                        self.lamb = l
+                        self.c = c
+                        self.M = m
+                        error.append(self.splitValidate(X_split, t_split, k))
+                        parms1.append(self.lamb)
+                        parms2.append(self.c)
+                        parms3.append(self.M)
+            
+            self.lamb = parms1[int(np.argmin(error))]            
+            self.c = parms2[int(np.argmin(error))]
+            self.M = parms3[int(np.argmin(error))]
+        
+        elif self.noyau == "sigmoidal": # b & d & lamb
+
+            for l in tqdm(np.arange(1e-09,2,0.07)):
+                for b in np.arange(1e-05,0.01,0.0005):
+                    for d in np.arange(1e-05,0.01,0.0005):
+                        
+                        self.lamb = l
+                        self.b = b
+                        self.d = d
+                        error.append(self.splitValidate(X_split, t_split, k))
+                        parms1.append(self.lamb)
+                        parms2.append(self.b)
+                        parms3.append(self.d)
+                        
+            
+            self.lamb = parms1[int(np.argmin(error))]     
+            self.b = parms2[int(np.argmin(error))]
+            self.d = parms3[int(np.argmin(error))]
+        
+        elif self.noyau == "rbf": # sigma_square & lamb
+
+            for l in tqdm(np.arange(1e-09,2,0.07)):
+                for sigma in np.arange(1e-09,2,0.07):
+                
+                    self.lamb = l
+                    self.sigma_square = sigma
+                    error.append(self.splitValidate(X_split, t_split, k))
+                    parms1.append(self.lamb)
+                    parms2.append(self.sigma_square)
+            
+            self.lamb = parms1[int(np.argmin(error))]     
+            self.sigma_square = parms2[int(np.argmin(error))]
+        
+        else : print("No cross-validation...")
+        
+        # train data
+        self.entrainement(x_tab, t_tab)
+    
+    def splitValidate(self, X_split, t_split, k): 
+        """
+        Split x_tab and w
+        """
+
+        somme_err_valid = 0
+
+        for bloc in np.arange(0, k, 1):
+
+            X_train = np.concatenate((X_split[0:np.int(bloc)] + X_split[np.int(bloc+1):np.int(k)]))
+            X_valid = X_split[np.int(bloc)]
+
+            t_train = np.concatenate((t_split[0:np.int(bloc)] + t_split[np.int(bloc+1):np.int(k)]))
+            t_valid = t_split[np.int(bloc)]
+
+            # train & validate
+            self.entrainement(X_train, t_train)
+            somme_err_valid += np.sum(self.erreur(t_valid, [self.prediction(x) for x in X_valid]))
+        
+        return somme_err_valid
 
     def affichage(self, x_tab, t_tab):
 
