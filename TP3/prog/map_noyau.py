@@ -153,7 +153,7 @@ class MAPnoyau:
         print("k-fold cross validation...")
         if self.noyau == "polynomial": # 𝑐 & 𝑀 & lamb
 
-            for l in tqdm(np.arange(1e-09,2,0.07)):
+            for l in tqdm(np.arange(1e-09,2,0.1)):
                 for c in np.arange(0,5,0.1):
                     for m in np.arange(2,6,1):
                         
@@ -171,7 +171,7 @@ class MAPnoyau:
         
         elif self.noyau == "sigmoidal": # b & d & lamb
 
-            for l in tqdm(np.arange(1e-09,2,0.07)):
+            for l in tqdm(np.arange(1e-09,2,0.1)):
                 for b in np.arange(1e-05,0.01,0.0005):
                     for d in np.arange(1e-05,0.01,0.0005):
                         
@@ -183,7 +183,6 @@ class MAPnoyau:
                         parms2.append(self.b)
                         parms3.append(self.d)
                         
-            
             self.lamb = parms1[int(np.argmin(error))]     
             self.b = parms2[int(np.argmin(error))]
             self.d = parms3[int(np.argmin(error))]
