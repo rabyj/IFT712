@@ -147,6 +147,8 @@ class MAPnoyau:
         errors = []
 
         # cross-validate
+        # search space size chosen to take max 1m with inputs train/test size=100
+        # search space can be easily modified with "num" linspace parameter
         print("Validation croisée {}-blocs...".format(k))
         if self.noyau == "lineaire": # lamb
             for l in tqdm(np.linspace(1e-09, 2, num=50)):
@@ -161,7 +163,7 @@ class MAPnoyau:
 
             for l in tqdm(np.linspace(1e-09, 2, num=17)):
                 for c in np.linspace(0, 5, num=17):
-                    for m in range(2, 7 , 1):
+                    for m in range(2, 7, 1):
                         params.append((l, c, m))
                         self.lamb, self.c, self.M = (l, c, m)
                         errors.append(self._split_validate(X_split, t_split, k))
