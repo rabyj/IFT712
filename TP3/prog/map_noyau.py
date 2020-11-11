@@ -147,7 +147,7 @@ class MAPnoyau:
         errors = []
 
         # cross-validate
-        print("{}-fold cross validation...".format(k))
+        print("Validation croisée {}-blocs...".format(k))
         if self.noyau == "lineaire": # lamb
             for l in tqdm(np.linspace(1e-09, 2, num=50)):
                 params.append(l)
@@ -198,7 +198,7 @@ class MAPnoyau:
             raise ValueError("{} n'est pas un noyau valide. Voir l'aide.".format(self.noyau))
 
         # train data
-        print("Tested {} hyperparameters configuration.".format(len(params)))
+        print("{} configurations d'hyperparamètres testées.".format(len(params)))
         self.entrainement(x_tab, t_tab)
 
     def _split_validate(self, X_split, t_split, k):
