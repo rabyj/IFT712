@@ -91,7 +91,16 @@ class LinearClassifier(object):
         #############################################################################
         # TODO: Return the best class label.                                        #
         #############################################################################
+        data = X
+        if self.bias:
+            data = augment(X) # PROBLEM : bias is added two times if coming from global_accuracy_and_cross_entropy_loss
 
+        print(data)
+
+        # softmax prediction and then argmax
+        pred = np.exp(np.dot(self.W.T, data))
+        pred /= np.sum(pred)
+        class_label = np.argmax(pred)
         #############################################################################
         #                          END OF YOUR CODE                                 #
         #############################################################################
@@ -114,7 +123,22 @@ class LinearClassifier(object):
         #############################################################################
         # TODO: Compute the softmax loss & accuracy for a series of samples X,y .   #
         #############################################################################
+        data = X
+        if self.bias:
+            data = augment(X)
 
+        for x_sample, y_sample in zip(data, y):
+
+            sample_loss, _ = self.cross_entropy_loss(x_sample, y_sample, reg)
+            loss += sample_loss
+
+            predicted_class = self.predict(x_sample)
+            accu += int(predicted_class == y_sample)
+
+        # average
+        N = X.shape[0]
+        loss /= N
+        accu /= N
         #############################################################################
         #                          END OF YOUR CODE                                 #
         #############################################################################
@@ -138,7 +162,6 @@ class LinearClassifier(object):
         # Initialize the loss and gradient to zero.
         loss = 0.0
         dW = np.zeros_like(self.W)
-
         #############################################################################
         # TODO: Compute the softmax loss and its gradient.                          #
         # Store the loss in loss and the gradient in dW.                            #
@@ -147,12 +170,22 @@ class LinearClassifier(object):
         # 3- Dont forget the regularization!                                        #
         # 4- Compute gradient => eq.(4.109)                                         #
         #############################################################################
+        # softmax predictions
+        pred = np.exp(np.dot(x, self.W)) # all the exp(w^T * x)
+        pred /= np.sum(pred)
 
+        # loss
+        loss -= np.log(pred[y])
+        loss += reg*(np.linalg.norm(self.W)**2)
+
+        # gradient
+        t = np.zeros((self.num_classes,), dtype=int)
+        t[y] = 1
+        dW += np.outer((pred - t), x) + 2*reg*self.W
         #############################################################################
         #                          END OF YOUR CODE                                 #
         #############################################################################
         return loss, dW
-
 
 def augment(x):
     if len(x.shape) == 1:
