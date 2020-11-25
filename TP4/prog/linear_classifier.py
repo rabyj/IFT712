@@ -97,7 +97,7 @@ class LinearClassifier(object):
         # softmax prediction and then argmax
         pred = np.exp(np.dot(X, self.W.T))
         pred /= np.sum(pred)
-        class_label = np.argmax(pred)
+        class_label = np.argmax(pred, axis=-1)
         #############################################################################
         #                          END OF YOUR CODE                                 #
         #############################################################################
