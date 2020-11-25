@@ -91,14 +91,11 @@ class LinearClassifier(object):
         #############################################################################
         # TODO: Return the best class label.                                        #
         #############################################################################
-        data = X
         if self.bias:
-            data = augment(X) # PROBLEM : bias is added two times if coming from global_accuracy_and_cross_entropy_loss
-
-        print(data)
+            X = augment(X)
 
         # softmax prediction and then argmax
-        pred = np.exp(np.dot(self.W.T, data))
+        pred = np.exp(np.dot(X, self.W.T))
         pred /= np.sum(pred)
         class_label = np.argmax(pred)
         #############################################################################
@@ -132,7 +129,9 @@ class LinearClassifier(object):
             sample_loss, _ = self.cross_entropy_loss(x_sample, y_sample, reg)
             loss += sample_loss
 
-            predicted_class = self.predict(x_sample)
+        for x_sample, y_sample in zip(X, y):
+
+            predicted_class = self.predict(x_sample) # augment check dans predict
             accu += int(predicted_class == y_sample)
 
         # average
@@ -171,7 +170,7 @@ class LinearClassifier(object):
         # 4- Compute gradient => eq.(4.109)                                         #
         #############################################################################
         # softmax predictions
-        pred = np.exp(np.dot(x, self.W)) # all the exp(w^T * x)
+        pred = np.exp(np.dot(x, self.W.T)) # all the exp(w^T * x)
         pred /= np.sum(pred)
 
         # loss
