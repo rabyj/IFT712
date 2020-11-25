@@ -94,10 +94,8 @@ class LinearClassifier(object):
         if self.bias:
             X = augment(X)
 
-        # softmax prediction and then argmax
-        pred = np.exp(np.dot(X, self.W.T))
-        pred /= np.sum(pred)
-        class_label = np.argmax(pred, axis=-1)
+        score = np.dot(X, self.W.T)
+        class_label = np.argmax(score, axis=-1)
         #############################################################################
         #                          END OF YOUR CODE                                 #
         #############################################################################
