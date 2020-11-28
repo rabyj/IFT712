@@ -2,6 +2,7 @@ import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import StratifiedKFold
 from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
 
 class preprocessing():
     
@@ -42,6 +43,12 @@ class preprocessing():
         # create dfs from scaled data
         scaled_train[col_names] = features_train
         scaled_test[col_names] = features_test
+        
+        #PCA
+        pca = PCA()
+        pca.fit(scaled_train)
+        scaled_train = pd.DataFrame(pca.transform(scaled_train))
+        scaled_test = pd.DataFrame(pca.transform(scaled_test))
         
         return scaled_train, scaled_test, t
 
