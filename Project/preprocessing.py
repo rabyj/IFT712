@@ -19,7 +19,7 @@ class preprocessing():
         test_data = pd.read_csv("data/test.csv")
         train_data = pd.read_csv("data/train.csv")    
         
-        # encode labels to be used as the target dataset 
+        # encode labels to be used as the target  
         # encode species to numerical categories
         le = LabelEncoder().fit(train_data.species) 
         t = le.transform(train_data.species)                   
