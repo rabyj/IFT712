@@ -9,7 +9,9 @@ class preprocessing():
         """
 
         Returns:
-            [type]: [description]
+           scaled_train [np.array]
+           scaled_test [np.array]
+           t [np.array] : labels
         """
         
         # import
@@ -31,10 +33,12 @@ class preprocessing():
         col_names = scaled_train.columns
         features_train = scaled_train[col_names]
         features_test = scaled_test[col_names]
+        
         # use StandardScaler
         scaler = StandardScaler().fit(features_train.values)
         features_train = scaler.transform(features_train.values)
         features_test = scaler.transform(features_test.values)
+        
         # create dfs from scaled data
         scaled_train[col_names] = features_train
         scaled_test[col_names] = features_test
@@ -46,12 +50,15 @@ class preprocessing():
         """
 
         Args:
-            train ([type]): [description]
-            t ([type]): [description]
+            train (np.array): 
+            t (np.array):
 
         Returns:
-            [type]: [description]
-        """
+            X_train [np.array]
+            X_test [np.array]
+            t_train [np.array]
+            t_test [np.array]
+        """ 
         X_train, X_test, t_train, t_test = None, None, None, None
 
         #https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.StratifiedKFold.html

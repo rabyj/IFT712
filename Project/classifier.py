@@ -4,16 +4,28 @@ from sklearn.metrics import accuracy_score, f1_score
 
 class classifier:
     """[summary]
-    
+
+       super class : - contains the variables that are used by the classifiers
+                     - calculate the best hyper-parameters for the classifiers
+                     - training the datasets
+                     - calculate the accuracy of the classifier
+                     - calculate the f1-score 
+                     - display the scores of the model
     """
     def __init__(self, X_train, X_test, t_train, t_test):
         """[summary]
 
         Args:
-            X_train ([type]): [description]
-            X_test ([type]): [description]
-            t_train ([type]): [description]
-            t_test ([type]): [description]
+            X_train (np.array)
+            X_test (np.array)
+            t_train (np.array)
+            t_test (np.array)
+            best_estimator_ (classifier) : the best estimator with parameters chosen by GridSearch 
+            best_score_ (float) : the best score 
+            classifier (classifier) : the working classifier
+            parameters (dict)
+            model (str) : the name of the classifier
+            
         """
         self.X_train = X_train
         self.X_test = X_test
@@ -29,6 +41,8 @@ class classifier:
         
     def getHyperParameters(self):
         """[summary]
+        
+        find the best parameters for the classifier using cross validation
         """
         
         grid = GridSearchCV(self.classifier, self.parameters, scoring='accuracy', n_jobs=-1, verbose=1)
@@ -40,6 +54,8 @@ class classifier:
     
     def trainDataset(self):
         """[summary]
+        
+        train the data
         """
         self.best_estimator_.fit(self.X_train, self.t_train)
     
@@ -47,11 +63,11 @@ class classifier:
         """[summary]
 
         Args:
-            x ([type]): [description]
-            t ([type]): [description]
+            x (np.array)
+            t (np.array)
 
         Returns:
-            [type]: [description]
+            accuracy [float]
         """
         
         return accuracy_score(t, self.best_estimator_.predict(x))
@@ -60,17 +76,19 @@ class classifier:
         """[summary]
 
         Args:
-            x ([type]): [description]
-            t ([type]): [description]
+            x (np.array)
+            t (np.array)
 
         Returns:
-            [type]: [description]
+            f1_score [float]
         """
         
         return f1_score(t, self.best_estimator_.predict(x), average="weighted")
 
     def displayResults(self):
         """[summary]
+        
+        display the information
         """
         print("-------------------------------------------------------\n")
         print("The model : "+ self.model)

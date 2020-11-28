@@ -6,17 +6,17 @@ class SVM_clf(classifier):
     """[summary]
 
     Args:
-        classifier ([type]): [description]
+        classifier (SVC)
     """
     
     def __init__(self, X_train, X_test, t_train, t_test):
         """[summary]
 
         Args:
-            X_train ([type]): [description]
-            X_test ([type]): [description]
-            t_train ([type]): [description]
-            t_test ([type]): [description]
+            X_train (np.array)
+            X_test (np.array)
+            t_train (np.array)
+            t_test (np.array)
         """
         
         super(SVM_clf, self).__init__(X_train, X_test, t_train, t_test)
