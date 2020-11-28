@@ -21,7 +21,7 @@ if __name__ == '__main__':
     train, test, t = preprocessing.importEncode()
     X_train, X_test, t_train, t_test = preprocessing.trainTestSplit(train, t)
     
-    classifiers = [LR_clf, Perceptron_clf, SVM_clf, MLP_clf, RF_clf]
+    classifiers = [LR_clf, Perceptron_clf, SVM_clf, MLP_clf, RF_clf, NB_clf]
     clfs = []
     
     for clf in classifiers:

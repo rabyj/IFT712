@@ -36,7 +36,7 @@ class classifier:
         self.best_score_ = None
         self.best_params_ = None
         self.classifier = None
-        self.parameters = {'var_smoothing': [1e-11, 1e-10, 1e-09, 1e-08, 1e-07]}
+        self.parameters = None
         self.model = "classifier"
         
     def getHyperParameters(self):
