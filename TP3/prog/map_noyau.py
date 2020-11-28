@@ -14,7 +14,6 @@ class MAPnoyau:
     def __init__(self, lamb=0.2, sigma_square=1.06, b=1.0, c=0.1, d=1.0, M=2, noyau='rbf'):
         """
         Classe effectuant de la segmentation de données 2D 2 classes à l'aide de la méthode à noyau.
-
         lamb: coefficiant de régularisation L2
         sigma_square: paramètre du noyau rbf
         b, d: paramètres du noyau sigmoidal
@@ -40,12 +39,10 @@ class MAPnoyau:
         contient les entrées (un tableau 2D Numpy, où la n-ième rangée
         correspond à l'entrée x_n) et des cibles t_train (un tableau 1D Numpy
         où le n-ième élément correspond à la cible t_n).
-
         L'entraînement doit utiliser un noyau de type RBF, lineaire, sigmoidal,
         ou polynomial (spécifié par ''self.noyau'') et dont les parametres
         sont contenus dans les variables self.sigma_square, self.c, self.b, self.d
         et self.M et un poids de régularisation spécifié par ``self.lamb``.
-
         Cette méthode doit assigner le champs ``self.a`` tel que spécifié à
         l'equation 6.8 du livre de Bishop et garder en mémoire les données
         d'apprentissage dans ``self.x_train``
@@ -94,11 +91,9 @@ class MAPnoyau:
         """
         Retourne la prédiction pour une entrée representée par un tableau
         1D Numpy ``x``.
-
         Cette méthode suppose que la méthode ``entrainement()`` a préalablement
         été appelée. Elle doit utiliser le champs ``self.a`` afin de calculer
         la prédiction y(x) (équation 6.9).
-
         NOTE : Puisque nous utilisons cette classe pour faire de la
         classification binaire, la prediction est +1 lorsque y(x)>0.5 et 0
         sinon
@@ -121,7 +116,6 @@ class MAPnoyau:
         ``self.lamb`` avec une validation croisée de type "k-fold" où k=10 avec les
         données contenues dans x_tab et t_tab. Une fois les meilleurs hyperparamètres
         trouvés, le modèle est entraîné une dernière fois.
-
         SUGGESTION: Les valeurs de ``self.sigma_square`` et ``self.lamb`` à explorer vont
         de 0.000000001 à 2, les valeurs de ``self.c`` de 0 à 5, les valeurs
         de ''self.b'' et ''self.d'' de 0.00001 à 0.01 et ``self.M`` de 2 à 6
@@ -147,7 +141,9 @@ class MAPnoyau:
         errors = []
 
         # cross-validate
-        print("{}-fold cross validation...".format(k))
+        # search space size chosen to take max 1m with inputs train/test size=100
+        # search space can be easily modified with "num" linspace parameter
+        print("Validation croisée {}-blocs...".format(k))
         if self.noyau == "lineaire": # lamb
             for l in tqdm(np.linspace(1e-09, 2, num=50)):
                 params.append(l)
@@ -161,7 +157,7 @@ class MAPnoyau:
 
             for l in tqdm(np.linspace(1e-09, 2, num=17)):
                 for c in np.linspace(0, 5, num=17):
-                    for m in range(2, 7 , 1):
+                    for m in range(2, 7, 1):
                         params.append((l, c, m))
                         self.lamb, self.c, self.M = (l, c, m)
                         errors.append(self._split_validate(X_split, t_split, k))
@@ -198,7 +194,7 @@ class MAPnoyau:
             raise ValueError("{} n'est pas un noyau valide. Voir l'aide.".format(self.noyau))
 
         # train data
-        print("Tested {} hyperparameters configuration.".format(len(params)))
+        print("{} configurations d'hyperparamètres testées.".format(len(params)))
         self.entrainement(x_tab, t_tab)
 
     def _split_validate(self, X_split, t_split, k):

@@ -20,10 +20,11 @@ def analyse_erreur(err_train, err_test):
     Fonction qui affiche un WARNING lorsqu'il y a apparence de sur ou de sous
     apprentissage
     """
-    if err_test - err_train > 15:
-        print("Attention, il y a une possibilité de sur-apprentissage.")
-    elif err_test > 20 and err_train > 20:
+    if err_test > 20 and err_train > 20:
         print("Attention, il y a une possibilité de sous-apprentissage.")
+    elif err_test - err_train > 12:
+        print("Attention, il y a une possibilité de sur-apprentissage.")
+
 
 def main():
 
