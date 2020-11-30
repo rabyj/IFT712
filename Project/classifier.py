@@ -42,7 +42,7 @@ class classifier:
     def getHyperParameters(self):
         """[summary]
         
-        find the best parameters for the classifier using cross validation
+        find the best parameters for the classifier
         """
         
         grid = GridSearchCV(self.classifier, self.parameters, scoring='accuracy', n_jobs=-1, verbose=1)
