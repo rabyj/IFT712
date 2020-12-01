@@ -45,7 +45,7 @@ class preprocessing():
         scaled_test[col_names] = features_test
         
         #PCA
-        pca = PCA()
+        pca = PCA(n_components=10, whiten=True)
         pca.fit(scaled_train)
         scaled_train = pd.DataFrame(pca.transform(scaled_train))
         scaled_test = pd.DataFrame(pca.transform(scaled_test))
