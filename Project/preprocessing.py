@@ -66,7 +66,7 @@ class preprocessing():
             t_train [np.array]
             t_test [np.array]
         """ 
-        X_train, X_test, t_train, t_test = None, None, None, None
+        X_train, X_valid, t_train, t_valid = None, None, None, None
 
         #https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.StratifiedKFold.html
         kfold = StratifiedKFold(n_splits=10, shuffle=True, random_state=42)
@@ -75,4 +75,4 @@ class preprocessing():
             X_train, X_test = train.values[train_index], train.values[test_index]
             t_train, t_test = t[train_index], t[test_index]
         
-        return X_train, X_test, t_train, t_test
+        return X_train, X_valid, t_train, t_valid

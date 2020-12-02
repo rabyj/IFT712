@@ -19,13 +19,13 @@ if __name__ == '__main__':
     
     preprocessing = preprocessing()
     train, test, t = preprocessing.importEncode()
-    X_train, X_test, t_train, t_test = preprocessing.trainTestSplit(train, t)
+    X_train, X_valid, t_train, t_valid = preprocessing.trainTestSplit(train, t)
     
     classifiers = [LR_clf, Perceptron_clf, SVM_clf, MLP_clf, RF_clf, NB_clf]
     clfs = []
     
     for clf in classifiers:
-        clfs.append(clf(X_train, X_test, t_train, t_test))
+        clfs.append(clf(X_train, X_valid, t_train, t_valid))
     
     
     for i in tqdm(range(len(classifiers))):
