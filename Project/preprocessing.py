@@ -72,7 +72,7 @@ class preprocessing():
         kfold = StratifiedKFold(n_splits=10, shuffle=True, random_state=42)
         
         for train_index, test_index in kfold.split(train, t):
-            X_train, X_test = train.values[train_index], train.values[test_index]
-            t_train, t_test = t[train_index], t[test_index]
+            X_train, X_valid = train.values[train_index], train.values[test_index]
+            t_train, t_valid = t[train_index], t[test_index]
         
         return X_train, X_valid, t_train, t_valid
