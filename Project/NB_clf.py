@@ -7,7 +7,7 @@ class NB_clf(classifier):
 
         classifier (LogisticRegression)
     """
-    
+
     def __init__(self, X_train, X_test, t_train, t_test):
         """[summary]
 
@@ -17,7 +17,7 @@ class NB_clf(classifier):
             t_train (np.array)
             t_test (np.array)
         """
-        
+
         super(NB_clf, self).__init__(X_train, X_test, t_train, t_test)
         self.model = "naive_bayes GaussianNB"
         self.classifier = GaussianNB()

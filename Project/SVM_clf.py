@@ -8,7 +8,7 @@ class SVM_clf(classifier):
     Args:
         classifier (SVC)
     """
-    
+
     def __init__(self, X_train, X_test, t_train, t_test):
         """[summary]
 
@@ -18,7 +18,7 @@ class SVM_clf(classifier):
             t_train (np.array)
             t_test (np.array)
         """
-        
+
         super(SVM_clf, self).__init__(X_train, X_test, t_train, t_test)
         self.model = "SVM"
         self.classifier = SVC(max_iter=10000)

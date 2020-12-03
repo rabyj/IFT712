@@ -16,7 +16,7 @@ class MLP_clf(classifier):
             t_train (np.array)
             t_test (np.array)
         """
-        
+
         super(MLP_clf, self).__init__(X_train, X_test, t_train, t_test)
         self.model = "MLPClassifier"
         self.classifier = MLPClassifier(max_iter=10000)

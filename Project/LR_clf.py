@@ -6,7 +6,7 @@ class LR_clf(classifier):
 
         classifier (LogisticRegression)
     """
-    
+
     def __init__(self, X_train, X_test, t_train, t_test):
         """[summary]
 
@@ -16,7 +16,7 @@ class LR_clf(classifier):
             t_train (np.array)
             t_test (np.array)
         """
-        
+
         super(LR_clf, self).__init__(X_train, X_test, t_train, t_test)
         self.model = "LogisticRegression"
         self.classifier = LogisticRegression(solver='liblinear', multi_class='auto', max_iter=10000)
