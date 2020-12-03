@@ -94,8 +94,8 @@ class classifier:
         print("The model : "+ self.model)
         print("The best parameters : {}".format(self.best_params_))
         print("Training accuracy: {}".format(self.getAccuracyScore(self.X_train, self.t_train)))
-        print("Test accuracy: {}".format(self.getAccuracyScore(self.X_test, self.t_test)))
+        print("Validation accuracy: {}".format(self.getAccuracyScore(self.X_test, self.t_test)))
         print("Training f1-score: {}".format(self.getF1Score(self.X_train, self.t_train)))
-        print("Test f1-score: {}".format(self.getF1Score(self.X_test, self.t_test)))
+        print("Validation f1-score: {}".format(self.getF1Score(self.X_test, self.t_test)))
         print("-------------------------------------------------------\n")
         
