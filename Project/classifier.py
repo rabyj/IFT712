@@ -12,14 +12,14 @@ class classifier:
                      - calculate the f1-score 
                      - display the scores of the model
     """
-    def __init__(self, X_train, X_test, t_train, t_test):
+    def __init__(self, X_train, X_valid, t_train, t_valid):
         """[summary]
 
         Args:
             X_train (np.array)
-            X_test (np.array)
+            X_valid (np.array)
             t_train (np.array)
-            t_test (np.array)
+            t_valid (np.array)
             best_estimator_ (classifier) : the best estimator with parameters chosen by GridSearch 
             best_score_ (float) : the best score 
             classifier (classifier) : the working classifier
@@ -28,9 +28,9 @@ class classifier:
             
         """
         self.X_train = X_train
-        self.X_test = X_test
+        self.X_valid = X_valid
         self.t_train = t_train
-        self.t_test = t_test
+        self.t_valid = t_valid
         
         self.best_estimator_ = None
         self.best_score_ = None
@@ -94,8 +94,8 @@ class classifier:
         print("The model : "+ self.model)
         print("The best parameters : {}".format(self.best_params_))
         print("Training accuracy: {}".format(self.getAccuracyScore(self.X_train, self.t_train)))
-        print("Validation accuracy: {}".format(self.getAccuracyScore(self.X_test, self.t_test)))
+        print("Validation accuracy: {}".format(self.getAccuracyScore(self.X_valid, self.t_valid)))
         print("Training f1-score: {}".format(self.getF1Score(self.X_train, self.t_train)))
-        print("Validation f1-score: {}".format(self.getF1Score(self.X_test, self.t_test)))
+        print("Validation f1-score: {}".format(self.getF1Score(self.X_valid, self.t_valid)))
         print("-------------------------------------------------------\n")
         
