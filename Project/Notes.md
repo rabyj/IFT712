@@ -66,3 +66,30 @@ DONE
 - What kind of results did we have with current setup? How much time did it take to run? Is k=10 cross-validation realistic or should we try k=5?
   - In general more than 90%. Perceptron around 50%.
   - All classifiers under 30s.
+
+## How hyperparams were obtained
+
+### Logistic regression
+
+(15min)
+
+First search large (100 configs k=5)
+"C" : np.linspace(0.1, 10, num=10)
+"l1_ratio" : np.linspace(0, 1, num=10)
+
+The model : Logistic Regression
+The best parameters : {'penalty': 'elasticnet', 'l1_ratio': 0.4444444444444444, 'C': 7.800000000000001}
+Training accuracy: 0.9966329966329966
+Validation accuracy: 0.9595959595959596
+Training f1-score: 0.9966014635519279
+Validation f1-score: 0.9478114478114479
+
+Second search (25 configs, k=5)
+"C" : np.linspace(1, 15, num=5),
+"l1_ratio" : np.linspace(0.4, 0.6, num=5)
+The model : Logistic Regression
+The best parameters : {'l1_ratio': 0.4, 'C': 8.0, 'penalty': 'elasticnet'}
+Training accuracy: 0.9966329966329966
+Validation accuracy: 0.9595959595959596
+Training f1-score: 0.9966014635519279
+Validation f1-score: 0.9478114478114479
