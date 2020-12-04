@@ -1,5 +1,5 @@
 import warnings
-#warnings.filterwarnings('ignore')
+#warnings.filterwarnings("ignore")
 from tqdm import tqdm
 
 from preprocessing import Preprocessor
@@ -12,7 +12,7 @@ from NB_clf import NB_clf
 
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
 
     preprocessor = Preprocessor()

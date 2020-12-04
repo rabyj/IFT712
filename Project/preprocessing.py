@@ -27,8 +27,8 @@ class Preprocessor():
         t = le.transform(train_data.species)
 
         # the id and species columns are not useful in our analysis once encoded
-        train = train_data.drop(['species', 'id'], axis=1)
-        test = test_data.drop(['id'], axis=1)
+        train = train_data.drop(["species", "id"], axis=1)
+        test = test_data.drop(["id"], axis=1)
 
         # center data around 0
         scaled_train = train.copy()

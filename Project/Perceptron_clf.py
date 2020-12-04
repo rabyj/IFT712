@@ -19,7 +19,7 @@ class Perceptron_clf(Classifier):
         """
 
         super(Perceptron_clf, self).__init__(X_train, X_test, t_train, t_test)
-        self.model = "Perceptron"
+        self.model_name = "Perceptron"
         self.classifier = Perceptron(penalty="l2",max_iter=1000)
-        self.parameters = {'alpha': [1e-5, 1e-4, 1e-3, 1e-2, 1e-1],
-                           'eta0' : [1e-5, 2e-4, 1e-4, 2e-3, 1e-3]}
+        self.parameters = {"alpha": [1e-5, 1e-4, 1e-3, 1e-2, 1e-1],
+                           "eta0" : [1e-5, 2e-4, 1e-4, 2e-3, 1e-3]}

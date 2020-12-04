@@ -2,27 +2,41 @@
 
 ## Style notes (from pylint warnings, to respect pep8)
 
-- Don't leave trailing whitespace (I fixed it for now with quick use of an extension) DONE
-- Always leave a blank newline a end of files DONE
-- Either use snake_case or PascalCase naming style, don't use both --> snake_case TODO
-- There is a certain order to imports (with blank line between each group): DONE
+TODO
+
+- It's okay and even better to have more expressive class names. Explicit is better than implicit. (see [PEP 20 -- The Zen of Python](https://www.python.org/dev/peps/pep-0020/))
+
+DONE
+
+- Don't leave trailing whitespace (I fixed it for now with quick use of an extension)
+- Always leave a blank newline a end of files
+- Either use snake_case or PascalCase naming style, don't use both --> snake_case
+- There is a certain order to imports (with blank line between each group):
   - standard library
   - related third party imports
   - local application/library specific imports
   - See : [Importing modules in Python - recommended position](https://stackoverflow.com/questions/20411014/importing-modules-in-python-recommended-position)
-- Class names need to start with a capital letter. DONE
-- It's okay and even better to have more expressive class names. Explicit is better than implicit. (see [PEP 20 -- The Zen of Python](https://www.python.org/dev/peps/pep-0020/)) TODO
+- Class names need to start with a capital letter.
 
 ## Clarity notes
 
-- preprocessing : "trainTestSplit" not an ideal function names. Could be called "TrainValidSplit".
+TODO
+
+- (in models) model : model_name
+- (in models) parameters : parameters_range
 - classifier :
   - "training the datasets" does not mean the right thing. "Training on the datasets" would be more accurate.
   - the args in the init are wrong, there are more than the actual number of parameters. The extra info should be attributes in the general class docstring.
   - change "test" for "valid" when applicable
 - Docstrings for everything
 
+DONE
+
+- preprocessing : "trainTestSplit" not an ideal function names. Could be called "TrainValidSplit".
+
 ## Usage notes
+
+TODO
 
 - One should be able to fix different hyperparameters than the ones found by the optimisation. We can't let everything be done in the init.
   - This means we need to have an attribute for each hyperparameters, and the default values would either be what we found with optimisation, or "None" (and then they need to be fixed by the user or the automatic optimisation)
@@ -36,6 +50,8 @@
 - preprocessing/split : Remove "random_state=42"
 
 - Once hyperparam optimization done, get generalisation score on test set!!!
+
+DONE
 
 ## Report/analysis notes
 

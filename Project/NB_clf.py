@@ -20,6 +20,6 @@ class NB_clf(Classifier):
         """
 
         super(NB_clf, self).__init__(X_train, X_test, t_train, t_test)
-        self.model = "naive_bayes GaussianNB"
+        self.model_name = "Gaussian Naive Bayes"
         self.classifier = GaussianNB()
-        self.parameters = {'var_smoothing': np.arange(1e-8, 1e-5, 1e-7)}
+        self.parameters = {"var_smoothing": np.arange(1e-8, 1e-5, 1e-7)}

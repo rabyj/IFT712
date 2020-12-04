@@ -19,6 +19,6 @@ class LR_clf(Classifier):
         """
 
         super(LR_clf, self).__init__(X_train, X_test, t_train, t_test)
-        self.model = "LogisticRegression"
-        self.classifier = LogisticRegression(solver='liblinear', multi_class='auto', max_iter=10000)
-        self.parameters = {'penalty' : ['l2']}
+        self.model_name = "Logistic Regression"
+        self.classifier = LogisticRegression(solver="liblinear", multi_class="auto", max_iter=10000)
+        self.parameters = {"penalty" : ["l2"]}

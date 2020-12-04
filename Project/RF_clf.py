@@ -21,7 +21,7 @@ class RF_clf(Classifier):
         """
 
         super(RF_clf, self).__init__(X_train, X_test, t_train, t_test)
-        self.model = "RandomForestClassifier"
+        self.model_name = "Random Forest Classifier"
         self.classifier = RandomForestClassifier()
         self.parameters = {"n_estimators": np.arange(85, 100),
                            "max_depth": np.linspace(40, 100, num = 10)}

@@ -36,7 +36,7 @@ class Classifier:
         self.best_params_ = None
         self.classifier = None
         self.parameters = None
-        self.model = "classifier"
+        self.model_name = None
 
     def get_hyperparameters(self):
         """[summary]
@@ -44,7 +44,7 @@ class Classifier:
         find the best parameters for the classifier
         """
 
-        grid = GridSearchCV(self.classifier, self.parameters, scoring='accuracy', n_jobs=-1, verbose=1)
+        grid = GridSearchCV(self.classifier, self.parameters, scoring="accuracy", n_jobs=-1, verbose=1)
         grid.fit(self.X_train, self.t_train)
 
         self.best_estimator_ = grid.best_estimator_
@@ -90,7 +90,7 @@ class Classifier:
         display the information
         """
         print("-------------------------------------------------------\n")
-        print("The model : "+ self.model)
+        print("The model : {}".format(self.model_name))
         print("The best parameters : {}".format(self.best_params_))
         print("Training accuracy: {}".format(self.get_accuracy(self.X_train, self.t_train)))
         print("Validation accuracy: {}".format(self.get_accuracy(self.X_test, self.t_test)))
