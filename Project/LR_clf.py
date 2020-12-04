@@ -1,7 +1,8 @@
-from classifier import classifier
 from sklearn.linear_model import LogisticRegression # https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
 
-class LR_clf(classifier):
+from classifier import Classifier
+
+class LR_clf(Classifier):
     """[summary]
 
         classifier (LogisticRegression)

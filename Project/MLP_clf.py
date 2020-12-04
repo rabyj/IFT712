@@ -1,7 +1,8 @@
-from classifier import classifier
 from sklearn.neural_network import MLPClassifier # https://scikit-learn.org/stable/modules/neural_networks_supervised.html#classification
 
-class MLP_clf(classifier):
+from classifier import Classifier
+
+class MLP_clf(Classifier):
     """[summary]
 
     Args:

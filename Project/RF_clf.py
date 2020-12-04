@@ -1,8 +1,9 @@
 import numpy as np
-from classifier import classifier
 from sklearn.ensemble import RandomForestClassifier # https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html
 
-class RF_clf(classifier):
+from classifier import Classifier
+
+class RF_clf(Classifier):
     """[summary]
 
     Args:

@@ -1,10 +1,8 @@
 import warnings
-warnings.filterwarnings('ignore')
+#warnings.filterwarnings('ignore')
+from tqdm import tqdm
 
-# preprocessing
-from preprocessing import preprocessing
-
-# models
+from preprocessing import Preprocessor
 from LR_clf import LR_clf
 from Perceptron_clf import Perceptron_clf
 from SVM_clf import SVM_clf
@@ -12,14 +10,14 @@ from MLP_clf import MLP_clf
 from RF_clf import RF_clf
 from NB_clf import NB_clf
 
-from tqdm import tqdm
+
 
 if __name__ == '__main__':
 
 
-    preprocessing = preprocessing()
-    train, test, t = preprocessing.importEncode()
-    X_train, X_valid, t_train, t_valid = preprocessing.trainTestSplit(train, t)
+    preprocessor = Preprocessor()
+    train, test, t = preprocessor.import_encode()
+    X_train, X_valid, t_train, t_valid = preprocessor.train_valid_split(train, t)
 
     classifiers = [LR_clf, Perceptron_clf, SVM_clf, MLP_clf, RF_clf, NB_clf]
     clfs = []
@@ -30,6 +28,6 @@ if __name__ == '__main__':
 
     for i in tqdm(range(len(classifiers))):
 
-        clfs[i].getHyperParameters()
-        clfs[i].trainDataset()
-        clfs[i].displayResults()
+        clfs[i].get_hyperparameters()
+        clfs[i].train_dataset()
+        clfs[i].display_results()

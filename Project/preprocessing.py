@@ -1,12 +1,14 @@
+"""Data preprocessing steps. Center and scale data. Apply PCA. Split for cross-validation.
+"""
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import StratifiedKFold
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 
-class preprocessing():
+class Preprocessor():
 
-    def importEncode(self):
+    def import_encode(self):
         """
 
         Returns:
@@ -24,7 +26,7 @@ class preprocessing():
         le = LabelEncoder().fit(train_data.species)
         t = le.transform(train_data.species)
 
-        # the id and species columns are not usefull in our analysis
+        # the id and species columns are not useful in our analysis once encoded
         train = train_data.drop(['species', 'id'], axis=1)
         test = test_data.drop(['id'], axis=1)
 
@@ -53,7 +55,7 @@ class preprocessing():
         return scaled_train, scaled_test, t
 
 
-    def trainTestSplit(self, train, t):
+    def train_valid_split(self, train, t):
         """
 
         Args:
@@ -62,9 +64,9 @@ class preprocessing():
 
         Returns:
             X_train [np.array]
-            X_test [np.array]
+            X_valid [np.array]
             t_train [np.array]
-            t_test [np.array]
+            t_valid [np.array]
         """
         X_train, X_valid, t_train, t_valid = None, None, None, None
 

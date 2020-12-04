@@ -1,7 +1,8 @@
-from classifier import classifier
 from sklearn.linear_model import Perceptron # https://scikit-learn.org/stable/modules/linear_model.html#perceptron
 
-class Perceptron_clf(classifier):
+from classifier import Classifier
+
+class Perceptron_clf(Classifier):
     """[summary]
 
     Args:

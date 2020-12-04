@@ -1,8 +1,9 @@
 import numpy as np
-from classifier import classifier
 from sklearn.naive_bayes import GaussianNB # https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.GaussianNB.html
 
-class NB_clf(classifier):
+from classifier import Classifier
+
+class NB_clf(Classifier):
     """[summary]
 
         classifier (LogisticRegression)

@@ -1,8 +1,8 @@
-# processing
+"""Parent class for classifiers"""
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import accuracy_score, f1_score
 
-class classifier:
+class Classifier:
     """[summary]
 
        super class : - contains the variables that are used by the classifiers
@@ -38,7 +38,7 @@ class classifier:
         self.parameters = None
         self.model = "classifier"
 
-    def getHyperParameters(self):
+    def get_hyperparameters(self):
         """[summary]
 
         find the best parameters for the classifier
@@ -51,14 +51,14 @@ class classifier:
         self.best_score_ = grid.best_score_
         self.best_params_ = grid.best_params_
 
-    def trainDataset(self):
+    def train_dataset(self):
         """[summary]
 
         train the data
         """
         self.best_estimator_.fit(self.X_train, self.t_train)
 
-    def getAccuracyScore(self, x, t):
+    def get_accuracy(self, x, t):
         """[summary]
 
         Args:
@@ -71,7 +71,7 @@ class classifier:
 
         return accuracy_score(t, self.best_estimator_.predict(x))
 
-    def getF1Score(self, x, t):
+    def get_f1_score(self, x, t):
         """[summary]
 
         Args:
@@ -84,7 +84,7 @@ class classifier:
 
         return f1_score(t, self.best_estimator_.predict(x), average="weighted")
 
-    def displayResults(self):
+    def display_results(self):
         """[summary]
 
         display the information
@@ -92,8 +92,8 @@ class classifier:
         print("-------------------------------------------------------\n")
         print("The model : "+ self.model)
         print("The best parameters : {}".format(self.best_params_))
-        print("Training accuracy: {}".format(self.getAccuracyScore(self.X_train, self.t_train)))
-        print("Validation accuracy: {}".format(self.getAccuracyScore(self.X_test, self.t_test)))
-        print("Training f1-score: {}".format(self.getF1Score(self.X_train, self.t_train)))
-        print("Validation f1-score: {}".format(self.getF1Score(self.X_test, self.t_test)))
+        print("Training accuracy: {}".format(self.get_accuracy(self.X_train, self.t_train)))
+        print("Validation accuracy: {}".format(self.get_accuracy(self.X_test, self.t_test)))
+        print("Training f1-score: {}".format(self.get_f1_score(self.X_train, self.t_train)))
+        print("Validation f1-score: {}".format(self.get_f1_score(self.X_test, self.t_test)))
         print("-------------------------------------------------------\n")

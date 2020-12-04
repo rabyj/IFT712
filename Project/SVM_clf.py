@@ -1,8 +1,9 @@
 import numpy as np
-from classifier import classifier
 from sklearn.svm import SVC # https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html
 
-class SVM_clf(classifier):
+from classifier import Classifier
+
+class SVM_clf(Classifier):
     """[summary]
 
     Args:
