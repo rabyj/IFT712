@@ -22,17 +22,17 @@ DONE
 
 TODO
 
-- (in models) model : model_name
-- (in models) parameters : parameters_range
 - classifier :
   - "training the datasets" does not mean the right thing. "Training on the datasets" would be more accurate.
   - the args in the init are wrong, there are more than the actual number of parameters. The extra info should be attributes in the general class docstring.
-  - change "test" for "valid" when applicable
 - Docstrings for everything
 
 DONE
 
 - preprocessing : "trainTestSplit" not an ideal function names. Could be called "TrainValidSplit".
+- (in models) model : model_name
+- (in models) parameters : parameters_range
+- change "test" for "valid" when applicable
 
 ## Usage notes
 
@@ -40,18 +40,18 @@ TODO
 
 - One should be able to fix different hyperparameters than the ones found by the optimisation. We can't let everything be done in the init.
   - This means we need to have an attribute for each hyperparameters, and the default values would either be what we found with optimisation, or "None" (and then they need to be fixed by the user or the automatic optimisation)
+  - Getter/setter for individual hyperparameters.
+  - Training possible without grid search.
+- Prediction on new data points
+- Separate preprocessing in different functions.
 
-- Getter/setter for individual hyperparameters.
-
-- Training possible without grid search.
+DONE
 
 - There is no cross-validation done right now! Oh no :O ! Big oopsie! "trainTestSplit" only returns one (1) split from the k-fold split.
 
 - preprocessing/split : Remove "random_state=42"
 
-- Once hyperparam optimization done, get generalisation score on test set!!!
-
-DONE
+- Once hyperparam optimization done, get generalisation score on test set!!! NOT APPLICABLE
 
 ## Report/analysis notes
 

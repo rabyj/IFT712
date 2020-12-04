@@ -10,18 +10,16 @@ class RF_clf(Classifier):
         classifier (RandomForestClassifier)
     """
 
-    def __init__(self, X_train, X_valid, t_train, t_valid):
+    def __init__(self, X_train, t_train):
         """[summary]
 
         Args:
             X_train (np.array)
-            X_valid (np.array)
             t_train (np.array)
-            t_valid (np.array)
         """
 
-        super(RF_clf, self).__init__(X_train, X_valid, t_train, t_valid)
+        super(RF_clf, self).__init__(X_train, t_train)
         self.model_name = "Random Forest Classifier"
         self.classifier = RandomForestClassifier()
-        self.parameters = {"n_estimators": np.arange(85, 100),
+        self.parameters_range = {"n_estimators": np.arange(85, 100),
                            "max_depth": np.linspace(40, 100, num = 10)}

@@ -12,7 +12,7 @@ class Classifier:
                      - calculate the f1-score
                      - display the scores of the model
     """
-    def __init__(self, X_train, X_valid, t_train, t_valid):
+    def __init__(self, X_train, t_train):
         """[summary]
 
         Args:
@@ -27,73 +27,75 @@ class Classifier:
             model (str) : the name of the classifier
         """
         self.X_train = X_train
-        self.X_valid = X_valid
         self.t_train = t_train
-        self.t_valid = t_valid
 
-        self.best_estimator_ = None
-        self.best_score_ = None
-        self.best_params_ = None
+        self.grid_clf = None
         self.classifier = None
-        self.parameters = None
+        self.parameters_range = None
         self.model_name = None
 
-    def get_hyperparameters(self):
-        """[summary]
+    def optimize_hyperparameters(self, n_fold=5, metric="accuracy"):
+        """Find the best parameters for the classifier through grid-search and StratifiedKFold cross-validation.
 
-        find the best parameters for the classifier
-        """
-
-        grid = GridSearchCV(self.classifier, self.parameters, scoring="accuracy", n_jobs=-1, verbose=1)
-        grid.fit(self.X_train, self.t_train)
-
-        self.best_estimator_ = grid.best_estimator_
-        self.best_score_ = grid.best_score_
-        self.best_params_ = grid.best_params_
-
-    def train_dataset(self):
-        """[summary]
-
-        train the data
-        """
-        self.best_estimator_.fit(self.X_train, self.t_train)
-
-    def get_accuracy(self, x, t):
-        """[summary]
+        Retrain the classifier on the whole training dataset afterwards.
 
         Args:
-            x (np.array)
+            n_fold (int) : Number of folds for StratifiedKFold.
+            metric (string) : Scoring metric for the grid search.
+        """
+        grid = GridSearchCV(self.classifier, self.parameters_range, scoring=metric, n_jobs=-1, verbose=1, cv=n_fold, refit=True)
+        grid.fit(self.X_train, self.t_train)
+        self.grid_clf = grid
+
+    def new_train(self, X, t):
+        """Train the best found estimator on a new X and t.
+        """
+        self.grid_clf.best_estimator_.fit(X, t)
+
+    def get_accuracy(self, X, t):
+        """Get the best found estimator accuracy on data X and labels t.
+
+        Args:
+            X (np.array)
             t (np.array)
 
         Returns:
             accuracy [float]
         """
+        return accuracy_score(t, self.grid_clf.best_estimator_.predict(X))
 
-        return accuracy_score(t, self.best_estimator_.predict(x))
-
-    def get_f1_score(self, x, t):
-        """[summary]
+    def get_f1_score(self, X, t):
+        """Get the best found estimator f1 score on data X and labels t.
 
         Args:
-            x (np.array)
+            X (np.array)
             t (np.array)
 
         Returns:
             f1_score [float]
         """
+        return f1_score(t, self.grid_clf.best_estimator_.predict(X), average="weighted")
 
-        return f1_score(t, self.best_estimator_.predict(x), average="weighted")
-
-    def display_results(self):
-        """[summary]
-
-        display the information
-        """
-        print("-------------------------------------------------------\n")
+    def display_general_results(self):
+        """Display optimised results."""
+        print("-------------------------------------------------------")
         print("The model : {}".format(self.model_name))
-        print("The best parameters : {}".format(self.best_params_))
-        print("Training accuracy: {}".format(self.get_accuracy(self.X_train, self.t_train)))
-        print("Validation accuracy: {}".format(self.get_accuracy(self.X_valid, self.t_valid)))
-        print("Training f1-score: {}".format(self.get_f1_score(self.X_train, self.t_train)))
-        print("Validation f1-score: {}".format(self.get_f1_score(self.X_valid, self.t_valid)))
+        print("The best parameters : {}".format(self.grid_clf.best_params_))
+        print("Global training accuracy: {}".format(self.get_accuracy(self.X_train, self.t_train)))
+        print("Global training f1-score: {}".format(self.get_f1_score(self.X_train, self.t_train)))
+        print("Accuracy score on validation sets : {:0.3f}+/-{:0.03f}".format(
+            self.grid_clf.cv_results_['mean_test_score'][self.grid_clf.best_index_],
+            self.grid_clf.cv_results_['std_test_score'][self.grid_clf.best_index_]*2
+        ))
+        print("-------------------------------------------------------\n")
+
+    def display_cv_results(self):
+        """Display grid-search and cross-validation results."""
+        print("-------------------------------------------------------")
+        print("The model : {}".format(self.model_name))
+        print("All grid-search validation results")
+        means = self.grid_clf.cv_results_['mean_test_score']
+        stds = self.grid_clf.cv_results_['std_test_score']
+        for mean, std, params in zip(means, stds, self.grid_clf.cv_results_['params']):
+            print("{:0.3f} (+/-{:0.03f}) for {}".format(mean, std*2, params))
         print("-------------------------------------------------------\n")
