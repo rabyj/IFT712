@@ -21,5 +21,9 @@ class LR_clf(Classifier):
 
         super(LR_clf, self).__init__(X_train, X_valid, t_train, t_valid)
         self.model_name = "Logistic Regression"
-        self.classifier = LogisticRegression(solver="liblinear", multi_class="auto", max_iter=10000)
-        self.parameters = {"penalty" : ["l2"]}
+        self.classifier = LogisticRegression(solver="saga", multi_class="multinomial", max_iter=10000)
+        self.parameters = {
+            "penalty" : ["elasticnet"],
+            "C" : np.linspace(1, 15, num=5),
+            "l1_ratio" : np.linspace(0.4, 0.6, num=5)
+            }
