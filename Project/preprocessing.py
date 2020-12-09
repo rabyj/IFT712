@@ -8,6 +8,10 @@ from sklearn.decomposition import PCA
 
 class Preprocessor():
     """Contains pre-processing and data transformation steps.
+    Minimal usage steps:
+        - import
+        - encode labels
+        - split into train/test
 
     Attributes:
         last_data : Last panda dataframe created from raw csv input
@@ -41,8 +45,8 @@ class Preprocessor():
             use_new_encoder (bool) : If true, create new label encoder from data
                                      and set it as instance attribute "label_encoder".
         Returns:
-            X_train (pd dframe) : training data (with no "id"/"species" original columns.)
-            t_train (pd dframe) : array-like target labels as integers
+            X (pd dframe) : training data (with no "id"/"species" original columns.)
+            t (np array) : target labels as integers
         """
         if not use_new_encoder and self.label_encoder is None:
             print("No label encoder created yet. Using data to create it.")
@@ -51,12 +55,12 @@ class Preprocessor():
         if use_new_encoder:
             self.label_encoder = LabelEncoder().fit(self.last_data.species)
 
-        t_train = self.label_encoder.transform(self.last_data.species)
+        t = self.label_encoder.transform(self.last_data.species)
 
         # the id and species columns are not useful in the training once encoded
-        X_train = self.last_data.drop(["species", "id"], axis=1)
+        X = self.last_data.drop(["species", "id"], axis=1)
 
-        return X_train, t_train
+        return X, t
 
 
     def scale_data(self, data_df, use_new_scaler=False):
@@ -81,12 +85,14 @@ class Preprocessor():
         return scaled_df
 
 
-    def apply_pca(self, data, n_components=10, use_new_pca=False):
+    def apply_pca(self, data, n_components=0.8, use_new_pca=False):
         """Apply PCA on the data.
 
         Args:
             data (pd dframe) : Data to transform.
-            n_components : Number of PCA components to keep if computing a new PCA.
+            n_components (int or float):
+                If int, number of PCA components to keep if computing a new PCA.
+                If float between 0 and 1, components needed to explain percentage of variance specified.
             use_new_pca (bool) : If true, compute new PCA with n_components from data
                                      and set it as instance attribute "pca".
         Returns:
@@ -100,28 +106,29 @@ class Preprocessor():
             pca = PCA(n_components=n_components, whiten=True)
             self.pca = pca.fit(data)
 
+
         return pd.DataFrame(self.pca.transform(data))
 
-    # def train_valid_split(self, train, t):
-    #     """
+    def train_test_split(self, data, t, n_split=5):
+        """Split the available data using StratifiedKFold.
+        Uses the same shuffling random state each time.
 
-    #     Args:
-    #         train (np.array):
-    #         t (np.array):
+        Args:
+            data (pd dframe) : Features
+            t (np array) : Targets
+            n_split (int) : 1/(test ratio). By default, value=5 gives 80%/20% train/test.
 
-    #     Returns:
-    #         X_train [np.array]
-    #         X_valid [np.array]
-    #         t_train [np.array]
-    #         t_valid [np.array]
-    #     """
-    #     X_train, X_valid, t_train, t_valid = None, None, None, None
+        Returns:
+            X_train (pd dframe)
+            X_test (pd dframe)
+            t_train (np array)
+            t_test (np array)
+        """
+        #https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.StratifiedKFold.html
+        kfold = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
 
-    #     #https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.StratifiedKFold.html
-    #     kfold = StratifiedKFold(n_splits=5, shuffle=True)
+        train_slice, test_slice = next(kfold.split(data, t))
+        X_train, X_test = data.iloc[train_slice], data.iloc[test_slice]
+        t_train, t_test = t[train_slice], t[test_slice]
 
-    #     for train_index, test_index in kfold.split(train, t):
-    #         X_train, X_valid = train.values[train_index], train.values[test_index]
-    #         t_train, t_valid = t[train_index], t[test_index]
-
-    #     return X_train, X_valid, t_train, t_valid
+        return X_train, X_test, t_train, t_test

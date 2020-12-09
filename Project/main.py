@@ -18,10 +18,15 @@ def main():
     preprocessor = Preprocessor()
     preprocessor.import_data("data/train.csv")
 
-    # erase non-transformed data
-    X_train, t_train = preprocessor.encode_labels(use_new_encoder=True)
+    X_total, t_total = preprocessor.encode_labels(use_new_encoder=True)
+    X_train, X_test, t_train, t_test = preprocessor.train_test_split(X_total, t_total)
+
+    # transform data and overwrite non-transformed data
     X_train = preprocessor.scale_data(X_train, use_new_scaler=True)
     X_train = preprocessor.apply_pca(X_train, use_new_pca=True)
+
+    X_test = preprocessor.scale_data(X_test, use_new_scaler=False)
+    X_test = preprocessor.apply_pca(X_test, use_new_pca=False)
 
     # classifiers = [LR_clf, Perceptron_clf, SVM_clf, MLP_clf, RF_clf, NB_clf]
     classifiers = [LR_clf]
@@ -33,9 +38,11 @@ def main():
 
     for i in tqdm(range(len(classifiers))):
 
-        clfs[i].optimize_hyperparameters()
-        clfs[i].display_general_results()
-        clfs[i].display_cv_results()
+        clf = clfs[i]
+        clf.optimize_hyperparameters()
+        clf.display_general_results()
+        clf.display_cv_results()
+        print("{:.03f}".format(clf.get_accuracy(X_test, t_test)))
 
 if __name__ == "__main__":
     main()

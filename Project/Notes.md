@@ -38,9 +38,9 @@ DONE
 
 TODO
 
-- Prediction on new data points --> IMPORTANT
+- CHECK IF SIGMA NEEDS TO HAVE *2 OR NOT!!!
 
-- Use proper test set --> IMPORTANT
+- Prediction on new data points --> IMPORTANT
 
 - One should be able to fix different hyperparameters than the ones found by the optimisation. We can't let everything be done in the init. ---> ONLY IF SOME TIME LEFT
   - This means we need to have an attribute for each hyperparameters, and the default values would either be what we found with optimisation, or "None" (and then they need to be fixed by the user or the automatic optimisation)
@@ -48,6 +48,8 @@ TODO
   - Training possible without grid search?
 
 DONE
+
+- Use proper test set
 
 - Separate preprocessing in different functions
 
@@ -71,6 +73,7 @@ DONE
   - apply pca without "whiten"
   - [Is it actually fine to perform unsupervised feature selection before cross-validation?](https://stats.stackexchange.com/questions/239898/is-it-actually-fine-to-perform-unsupervised-feature-selection-before-cross-valid)
   - [PCA and the train/test split](https://stats.stackexchange.com/questions/55718/pca-and-the-train-test-split)
+  - using different scalers
 
 ## Information I need
 
@@ -81,8 +84,6 @@ DONE
 ## How hyperparams were obtained
 
 ### Logistic regression
-
-- verify if max iter changes time of computations
 
 (15min)
 
@@ -106,3 +107,22 @@ Training accuracy: 0.9966329966329966
 Validation accuracy: 0.9595959595959596
 Training f1-score: 0.9966014635519279
 Validation f1-score: 0.9478114478114479
+
+
+The model : Logistic Regression
+All grid-search validation results
+pca n=10
+0.940 (+/-0.024) for {'C': 0.8, 'l1_ratio': 0.4, 'penalty': 'elasticnet'}
+pca n=23 (explain 80% of variance)
+0.976 (+/-0.012) for {'l1_ratio': 0.4, 'penalty': 'elasticnet', 'C': 0.8}
+pca n=25
+0.978 (+/-0.010) for {'l1_ratio': 0.4, 'C': 0.8, 'penalty': 'elasticnet'}
+pca n=31 (explain 85% of variance)
+0.972 (+/-0.014) for {'C': 0.8, 'penalty': 'elasticnet', 'l1_ratio': 0.4}
+
+retest those with proper test set!!!!!!!!!!
+
+with 80/20 train/test (and n=0.8)
+and k=8 CV with that 80 (so leave-one out cross-valid)
+0.971 (+/-0.034) for {'C': 0.8, 'l1_ratio': 0.4, 'penalty': 'elasticnet'}
+0.975 accuracy on test set!

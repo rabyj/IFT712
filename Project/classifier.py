@@ -34,7 +34,7 @@ class Classifier:
         self.parameters_range = None
         self.model_name = None
 
-    def optimize_hyperparameters(self, n_fold=5, metric="accuracy"):
+    def optimize_hyperparameters(self, n_fold=8, metric="accuracy"):
         """Find the best parameters for the classifier through grid-search and StratifiedKFold cross-validation.
 
         Retrain the classifier on the whole training dataset afterwards.
@@ -81,8 +81,8 @@ class Classifier:
         print("-------------------------------------------------------")
         print("The model : {}".format(self.model_name))
         print("The best parameters : {}".format(self.grid_clf.best_params_))
-        print("Global training accuracy: {}".format(self.get_accuracy(self.X_train, self.t_train)))
-        print("Global training f1-score: {}".format(self.get_f1_score(self.X_train, self.t_train)))
+        print("Global training accuracy: {:0.3f}".format(self.get_accuracy(self.X_train, self.t_train)))
+        print("Global training f1-score: {:0.3f}".format(self.get_f1_score(self.X_train, self.t_train)))
         print("Accuracy score on validation sets : {:0.3f}+/-{:0.03f}".format(
             self.grid_clf.cv_results_['mean_test_score'][self.grid_clf.best_index_],
             self.grid_clf.cv_results_['std_test_score'][self.grid_clf.best_index_]*2
