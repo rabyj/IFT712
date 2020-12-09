@@ -7,45 +7,100 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 
 class Preprocessor():
+    """Contains pre-processing and data transformation steps.
 
-    def import_encode(self):
+    Attributes:
+        last_data : Last panda dataframe created from raw csv input
+        label_encoder : sklearn object used to encode target labels into number
+        scaler : sklearn object used to center and reduce data
+        pca : sklearn object used to transform data using PCA
+    """
+    def __init__(self):
+        self.last_data = None
+        self.label_encoder = None
+        self.scaler = None
+        self.pca = None
+
+
+    def import_data(self, path):
+        """Read CSV data into Panda dataframe.
+
+        Args:
+            path (string) : path of csv
+
+        Sets attributes:
+            self.last_data
         """
+        self.last_data = pd.read_csv(path)
 
+
+    def encode_labels(self, use_new_encoder=False):
+        """Encode last loaded dataframe class labels into numerical classes.
+
+        Args:
+            use_new_encoder (bool) : If true, create new label encoder from data
+                                     and set it as instance attribute "label_encoder".
         Returns:
-           scaled_train [np.array] : data
-           t_train [np.array] : labels
+            X_train (pd dframe) : training data (with no "id"/"species" original columns.)
+            t_train (pd dframe) : array-like target labels as integers
         """
+        if not use_new_encoder and self.label_encoder is None:
+            print("No label encoder created yet. Using data to create it.")
+            use_new_encoder = True
 
-        # import
-        train_data = pd.read_csv("data/train.csv")
+        if use_new_encoder:
+            self.label_encoder = LabelEncoder().fit(self.last_data.species)
 
-        # encode labels to be used as the target
-        # encode species to numerical categories
-        le = LabelEncoder().fit(train_data.species)
-        t_train = le.transform(train_data.species)
+        t_train = self.label_encoder.transform(self.last_data.species)
 
-        # the id and species columns are not useful in our analysis once encoded
-        train = train_data.drop(["species", "id"], axis=1)
+        # the id and species columns are not useful in the training once encoded
+        X_train = self.last_data.drop(["species", "id"], axis=1)
 
-        # center data around 0
-        scaled_train = train.copy()
-        col_names = scaled_train.columns
-        features_train = scaled_train[col_names]
+        return X_train, t_train
 
-        # use StandardScaler
-        scaler = StandardScaler().fit(features_train.values)
-        features_train = scaler.transform(features_train.values)
 
-        # create dfs from scaled data
-        scaled_train[col_names] = features_train
+    def scale_data(self, data_df, use_new_scaler=False):
+        """Standardize features by removing the (training) mean and scaling to unit variance.
 
-        #PCA
-        pca = PCA(n_components=10, whiten=True)
-        pca.fit(scaled_train)
-        scaled_train = pd.DataFrame(pca.transform(scaled_train))
+        Args:
+            use_new_scaler (bool) : If true, compute new data scaler from data
+                                     and set it as instance attribute "scaler".
+        Returns:
+            Scaled features (pd dframe)
+        """
+        if not use_new_scaler and self.scaler is None:
+            print("No scaler created yet. Using data to create it.")
+            use_new_scaler = True
 
-        return scaled_train, t_train
+        if use_new_scaler:
+            self.scaler = StandardScaler().fit(data_df.values)
 
+        scaled_data = self.scaler.transform(data_df.values)
+        scaled_df = pd.DataFrame(scaled_data, index=data_df.index, columns=data_df.columns)
+
+        return scaled_df
+
+
+    def apply_pca(self, data, n_components=10, use_new_pca=False):
+        """Apply PCA on the data.
+
+        Args:
+            data (pd dframe) : Data to transform.
+            n_components : Number of PCA components to keep if computing a new PCA.
+            use_new_pca (bool) : If true, compute new PCA with n_components from data
+                                     and set it as instance attribute "pca".
+        Returns:
+            Transformed features (pd dframe)
+        """
+        if not use_new_pca and self.pca is None:
+            print("No PCA tranformation computed yet. Using data to create it.")
+            use_new_pca = True
+
+        if use_new_pca:
+            pca = PCA(n_components=n_components, whiten=True)
+            self.pca = pca.fit(data)
+
+        return pd.DataFrame(self.pca.transform(data))
 
     # def train_valid_split(self, train, t):
     #     """

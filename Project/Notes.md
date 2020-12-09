@@ -38,14 +38,18 @@ DONE
 
 TODO
 
-- One should be able to fix different hyperparameters than the ones found by the optimisation. We can't let everything be done in the init.
+- Prediction on new data points --> IMPORTANT
+
+- Use proper test set --> IMPORTANT
+
+- One should be able to fix different hyperparameters than the ones found by the optimisation. We can't let everything be done in the init. ---> ONLY IF SOME TIME LEFT
   - This means we need to have an attribute for each hyperparameters, and the default values would either be what we found with optimisation, or "None" (and then they need to be fixed by the user or the automatic optimisation)
   - Getter/setter for individual hyperparameters.
-  - Training possible without grid search.
-- Prediction on new data points
-- Separate preprocessing in different functions.
+  - Training possible without grid search?
 
 DONE
+
+- Separate preprocessing in different functions
 
 - There is no cross-validation done right now! Oh no :O ! Big oopsie! "trainTestSplit" only returns one (1) split from the k-fold split.
 
@@ -61,6 +65,13 @@ DONE
 - We need to show some results from the grid search optimisation. Why did we choose the grid we did with each classifier? --> Perceptron
 - What happens if we do GridSearch with a different scoring method???
 
+- don't forget to mention what we could have done more
+  - see if applying pca by set of features affect results
+  - check for outliers
+  - apply pca without "whiten"
+  - [Is it actually fine to perform unsupervised feature selection before cross-validation?](https://stats.stackexchange.com/questions/239898/is-it-actually-fine-to-perform-unsupervised-feature-selection-before-cross-valid)
+  - [PCA and the train/test split](https://stats.stackexchange.com/questions/55718/pca-and-the-train-test-split)
+
 ## Information I need
 
 - What kind of results did we have with current setup? How much time did it take to run? Is k=10 cross-validation realistic or should we try k=5?
@@ -70,6 +81,8 @@ DONE
 ## How hyperparams were obtained
 
 ### Logistic regression
+
+- verify if max iter changes time of computations
 
 (15min)
 
