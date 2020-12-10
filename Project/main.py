@@ -23,18 +23,18 @@ def main():
 
     # transform data and overwrite non-transformed data
     X_train = preprocessor.scale_data(X_train, use_new_scaler=True)
-    X_train = preprocessor.apply_pca(X_train, use_new_pca=True)
+    # X_train = preprocessor.apply_pca(X_train, use_new_pca=True, n_components=0.8)
 
     X_test = preprocessor.scale_data(X_test, use_new_scaler=False)
-    X_test = preprocessor.apply_pca(X_test, use_new_pca=False)
+    # X_test = preprocessor.apply_pca(X_test, use_new_pca=False)
 
     # classifiers = [LR_clf, Perceptron_clf, SVM_clf, MLP_clf, RF_clf, NB_clf]
-    classifiers = [LR_clf]
+    classifiers = [RF_clf]
     clfs = []
 
+    # init classifiers
     for clf in classifiers:
         clfs.append(clf(X_train, t_train))
-
 
     for i in tqdm(range(len(classifiers))):
 

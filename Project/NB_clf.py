@@ -17,4 +17,17 @@ class NB_clf(Classifier):
         super(NB_clf, self).__init__(X_train, t_train)
         self.model_name = "Gaussian Naive Bayes"
         self.classifier = GaussianNB()
-        self.hyperparams = {"var_smoothing": np.arange(1e-8, 1e-5, 1e-7)}
+        self.hyperparams = {"var_smoothing": [1e-9]}
+
+
+    def set_hyperparams(self, var_smoothing=1e-9):
+        """Set hyperparameters with single values. See sklearn doc for meaning."""
+        self.hyperparams["var_smoothing"] = [var_smoothing]
+
+
+    def set_hyperparams_range(self, var_smoothing):
+        """Set hyperparameters with ranges. See sklearn doc for meaning.
+
+        Training will fail if any parameter is not list-like.
+        """
+        self.hyperparams["var_smoothing"] = var_smoothing

@@ -75,6 +75,8 @@ DONE
   - [PCA and the train/test split](https://stats.stackexchange.com/questions/55718/pca-and-the-train-test-split)
   - using different scalers
 
+- Gaussian Naive Bayes : Show effect of pca whiten=false? Compare effect of PCA with Perceptron!!!
+
 ## Information I need
 
 - What kind of results did we have with current setup? How much time did it take to run? Is k=10 cross-validation realistic or should we try k=5?
