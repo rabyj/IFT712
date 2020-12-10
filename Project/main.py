@@ -1,8 +1,8 @@
 import warnings
+from tqdm import tqdm
+
 from sklearn.exceptions import ConvergenceWarning
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
-
-from tqdm import tqdm
 
 from preprocessing import Preprocessor
 from LR_clf import LR_clf
@@ -11,8 +11,6 @@ from SVM_clf import SVM_clf
 from MLP_clf import MLP_clf
 from RF_clf import RF_clf
 from NB_clf import NB_clf
-
-import numpy as np
 
 def main():
     """Run general parameter search and print results for each classifier."""

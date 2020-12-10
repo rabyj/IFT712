@@ -28,7 +28,7 @@ class Classifier:
 
         self.grid_clf = None
         self.classifier = None
-        self.hyperparams = None
+        self.hyperparams = {}
         self.model_name = None
 
 

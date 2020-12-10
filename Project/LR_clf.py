@@ -17,13 +17,21 @@ class LR_clf(Classifier):
         super(LR_clf, self).__init__(X_train, t_train)
         self.model_name = "Logistic Regression"
         self.classifier = LogisticRegression(solver="saga", multi_class="multinomial", max_iter=1000)
-        # self.hyperparams = {
-        #     "penalty" : ["elasticnet"],
-        #     "C" : np.linspace(0.1, 10, num=10),
-        #     "l1_ratio" : np.linspace(0, 1, num=10)
-        #     }
-        self.hyperparams = {
-            "penalty" : ["elasticnet"],
-            "C" : [8.9],
-            "l1_ratio" : [1/3]
-            }
+        self.set_hyperparams()
+
+
+    def set_hyperparams(self, penalty="elasictnet", C=8.9, l1_ratio=1/3):
+        """Set hyperparameters with single values. See sklearn doc for meaning."""
+        self.hyperparams["penalty"] = [penalty]
+        self.hyperparams["C"] = [C]
+        self.hyperparams["l1_ratio"] = [l1_ratio]
+
+
+    def set_hyperparams_range(self, penalty, C, l1_ratio):
+        """Set hyperparameters with ranges. See sklearn doc for meaning.
+
+        Training will fail if any parameter is not list-like.
+        """
+        self.hyperparams["penalty"] = penalty
+        self.hyperparams["C"] = C
+        self.hyperparams["l1_ratio"] = l1_ratio
