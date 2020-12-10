@@ -21,5 +21,5 @@ class RF_clf(Classifier):
         super(RF_clf, self).__init__(X_train, t_train)
         self.model_name = "Random Forest Classifier"
         self.classifier = RandomForestClassifier()
-        self.parameters_range = {"n_estimators": np.arange(85, 100),
+        self.hyperparams = {"n_estimators": np.arange(85, 100),
                            "max_depth": np.linspace(40, 100, num = 10)}

@@ -19,6 +19,6 @@ class MLP_clf(Classifier):
         super(MLP_clf, self).__init__(X_train, t_train)
         self.model_name = "MLP Classifier"
         self.classifier = MLPClassifier(max_iter=10000)
-        self.parameters_range = {"hidden_layer_sizes": [(70,10), (100,20), (50,30)],
+        self.hyperparams = {"hidden_layer_sizes": [(70,10), (100,20), (50,30)],
                             "learning_rate_init": [1e-2, 5e-2, 5e-1],
                             "activation": ["relu", "logistic"]}

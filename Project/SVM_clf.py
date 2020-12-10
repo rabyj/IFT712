@@ -21,8 +21,9 @@ class SVM_clf(Classifier):
         super(SVM_clf, self).__init__(X_train, t_train)
         self.model_name = "Support Vector Machine (SVM)"
         self.classifier = SVC(max_iter=10000)
-        self.parameters_range = {"kernel": ["poly", "rbf", "sigmoid"],
-                           "gamma": [1e-2, 1e-1, 5e-2, 5e-1],
-                           "C": np.linspace(1, 5, num=5),
-                           "gamma": np.geomspace(1e-3, 0.01, num=5),
-                           "degree": np.arange(2, 5, 2)}
+        self.hyperparams = {
+            "kernel": ["poly", "rbf", "sigmoid"],
+            "C": np.linspace(1, 5, num=5),
+            "gamma": np.geomspace(1e-3, 0.01, num=5),
+            "degree": np.arange(2, 5, 2)
+            }

@@ -1,101 +1,136 @@
 """Parent class for classifiers"""
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import accuracy_score, f1_score
+import pandas as pd
 
 class Classifier:
-    """[summary]
+    """Super class to use different sklearn classifiers.
 
-       super class : - contains the variables that are used by the classifiers
-                     - calculate the best hyper-parameters for the classifiers
-                     - training the datasets
-                     - calculate the accuracy of the classifier
-                     - calculate the f1-score
-                     - display the scores of the model
+    - Optimizes hyper-parameters and display results
+    - Computes accuracy and f1-score on given datasets
+
+    Args :
+        X_train (np.array) : training features
+        t_train (np.array) : training labels
+
+    Attributes :
+        X_train (np.array)
+        t_train (np.array)
+        grid_clf (sklearn GridSearchCV object) : Fitted estimator and grid-search results
+        classifier (sklearn classifier) : Used classifier
+        hyperparams (dict) : Hyperparameters ranges for CV/grid search (can be single values)
+        model_name (str) : the name of the classifier
     """
     def __init__(self, X_train, t_train):
-        """[summary]
-
-        Args:
-            X_train (np.array)
-            X_valid (np.array)
-            t_train (np.array)
-            t_valid (np.array)
-            best_estimator_ (classifier) : the best estimator with parameters chosen by GridSearch
-            best_score_ (float) : the best score
-            classifier (classifier) : the working classifier
-            parameters (dict)
-            model (str) : the name of the classifier
-        """
+        """Initialize all attributes."""
         self.X_train = X_train
         self.t_train = t_train
 
         self.grid_clf = None
         self.classifier = None
-        self.parameters_range = None
+        self.hyperparams = None
         self.model_name = None
 
-    def optimize_hyperparameters(self, n_fold=8, metric="accuracy"):
-        """Find the best parameters for the classifier through grid-search and StratifiedKFold cross-validation.
 
-        Retrain the classifier on the whole training dataset afterwards.
+    def optimize_hyperparameters(self, n_fold=8, metric="accuracy"):
+        """Find the best parameters for the classifier through grid-search and
+        StratifiedKFold cross-validation.
+
+        Computes accuracy and f1-score on validation sets, optimizes on given metric.
+        Only "f1_macro" and "accuracy" metrics are currently supported.
+
+        Retrains the classifier on the whole training dataset afterwards.
+
+        Uses all available processors.
 
         Args:
             n_fold (int) : Number of folds for StratifiedKFold.
-            metric (string) : Scoring metric for the grid search.
+            metric (string) : Metric to optimize on.
         """
-        grid = GridSearchCV(self.classifier, self.parameters_range, scoring=metric, n_jobs=-1, verbose=1, cv=n_fold, refit=True)
+        scores=["accuracy", "f1_macro"]
+        grid = GridSearchCV(
+            self.classifier, self.hyperparams, scoring=scores, n_jobs=-1, verbose=1, cv=n_fold, refit=metric
+            )
         grid.fit(self.X_train, self.t_train)
         self.grid_clf = grid
 
+
     def new_train(self, X, t):
-        """Train the best found estimator on a new X and t.
-        """
+        """Train the best found estimator on a new X and t."""
         self.grid_clf.best_estimator_.fit(X, t)
 
+
     def get_accuracy(self, X, t):
-        """Get the best found estimator accuracy on data X and labels t.
+        """Return the accuracy score on data X and labels t from optimized estimator.
 
         Args:
             X (np.array)
             t (np.array)
 
         Returns:
-            accuracy [float]
+            accuracy (float)
         """
         return accuracy_score(t, self.grid_clf.best_estimator_.predict(X))
 
+
     def get_f1_score(self, X, t):
-        """Get the best found estimator f1 score on data X and labels t.
+        """Return the macro f1-score on data X and labels t from optimized estimator.
 
         Args:
             X (np.array)
             t (np.array)
 
         Returns:
-            f1_score [float]
+            f1_score (float)
         """
-        return f1_score(t, self.grid_clf.best_estimator_.predict(X), average="weighted")
+        return f1_score(t, self.grid_clf.best_estimator_.predict(X), average="macro")
+
 
     def display_general_results(self):
-        """Display optimised results."""
+        """Display optimised results with 95% confidence interval (2sigma)"""
+        results = self.grid_clf.cv_results_
+        i = self.grid_clf.best_index_
+
+        valid_acc = results["mean_test_accuracy"][i]
+        valid_acc_std = results["std_test_accuracy"][i]
+
+        valid_f1 = results["mean_test_f1_macro"][i]
+        valid_f1_std = results["std_test_f1_macro"][i]
+
         print("-------------------------------------------------------")
+        print("Validation results")
         print("The model : {}".format(self.model_name))
         print("The best parameters : {}".format(self.grid_clf.best_params_))
-        print("Global training accuracy: {:0.3f}".format(self.get_accuracy(self.X_train, self.t_train)))
-        print("Global training f1-score: {:0.3f}".format(self.get_f1_score(self.X_train, self.t_train)))
-        print("Accuracy score on validation sets : {:0.3f}+/-{:0.03f}".format(
-            self.grid_clf.cv_results_['mean_test_score'][self.grid_clf.best_index_],
-            self.grid_clf.cv_results_['std_test_score'][self.grid_clf.best_index_]*2
-        ))
+        print("Mean accuracy and macro f1-score with 2 sigma interval on validation sets")
+        print("Accuracy: {:0.3f}+/-{:0.03f}".format(valid_acc, valid_acc_std*2))
+        print("f1-score: {:0.3f}+/-{:0.03f}".format(valid_f1, valid_f1_std*2))
         print("-------------------------------------------------------\n")
+
+
+    def _create_results_df(self):
+        """Return pandas dataframe of cross-validation results with certain columns."""
+        chosen_columns = (
+            ["param_" + key for key in self.grid_clf.cv_results_["params"][0].keys()] +
+            ["mean_test_accuracy", "std_test_accuracy", "mean_test_f1_macro", "std_test_f1_macro"]
+        )
+        df = pd.DataFrame.from_dict(self.grid_clf.cv_results_)
+        return df[chosen_columns]
+
+
+    def return_cv_results(self):
+        """Return pandas dataframe of cross-validation results."""
+        return self._create_results_df()
+
 
     def display_cv_results(self):
         """Display grid-search and cross-validation results."""
         print("-------------------------------------------------------")
         print("The model : {}".format(self.model_name))
-        print("All grid-search validation results")
-        means = self.grid_clf.cv_results_['mean_test_score']
-        stds = self.grid_clf.cv_results_['std_test_score']
-        for mean, std, params in zip(means, stds, self.grid_clf.cv_results_['params']):
-            print("{:0.3f} (+/-{:0.03f}) for {}".format(mean, std*2, params))
+        print("All grid-search validation results.")
+        df = self._create_results_df()
+        with pd.option_context(
+            "display.max_rows", None, "display.max_columns", None,
+            "display.width", None, "display.max_colwidth", -1
+        ):
+            print(df)
         print("-------------------------------------------------------\n")

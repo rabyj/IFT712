@@ -108,7 +108,6 @@ Validation accuracy: 0.9595959595959596
 Training f1-score: 0.9966014635519279
 Validation f1-score: 0.9478114478114479
 
-
 The model : Logistic Regression
 All grid-search validation results
 pca n=10
@@ -123,6 +122,6 @@ pca n=31 (explain 85% of variance)
 retest those with proper test set!!!!!!!!!!
 
 with 80/20 train/test (and n=0.8)
-and k=8 CV with that 80 (so leave-one out cross-valid)
+and k=8 CV with that 80 (so leave-one out of each class)
 0.971 (+/-0.034) for {'C': 0.8, 'l1_ratio': 0.4, 'penalty': 'elasticnet'}
 0.975 accuracy on test set!

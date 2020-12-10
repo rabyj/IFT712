@@ -1,5 +1,7 @@
 import warnings
-#warnings.filterwarnings("ignore")
+from sklearn.exceptions import ConvergenceWarning
+warnings.filterwarnings("ignore", category=ConvergenceWarning)
+
 from tqdm import tqdm
 
 from preprocessing import Preprocessor
@@ -42,7 +44,9 @@ def main():
         clf.optimize_hyperparameters()
         clf.display_general_results()
         clf.display_cv_results()
-        print("{:.03f}".format(clf.get_accuracy(X_test, t_test)))
+        print("Test accuracy : {:.03f}".format(clf.get_accuracy(X_test, t_test)))
+        print("Test f1-score : {:.03f}".format(clf.get_f1_score(X_test, t_test)))
+
 
 if __name__ == "__main__":
     main()

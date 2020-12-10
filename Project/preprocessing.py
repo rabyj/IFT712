@@ -20,6 +20,7 @@ class Preprocessor():
         pca : sklearn object used to transform data using PCA
     """
     def __init__(self):
+        """Initialize all attributes to None."""
         self.last_data = None
         self.label_encoder = None
         self.scaler = None
@@ -125,7 +126,7 @@ class Preprocessor():
             t_test (np array)
         """
         #https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.StratifiedKFold.html
-        kfold = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+        kfold = StratifiedKFold(n_splits=n_split, shuffle=True, random_state=42)
 
         train_slice, test_slice = next(kfold.split(data, t))
         X_train, X_test = data.iloc[train_slice], data.iloc[test_slice]
