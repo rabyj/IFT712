@@ -1,4 +1,3 @@
-"""Parent class for classifiers"""
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import accuracy_score, f1_score
 import pandas as pd

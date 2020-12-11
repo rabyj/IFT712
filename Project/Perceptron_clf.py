@@ -16,15 +16,14 @@ class Perceptron_clf(Classifier):
         super(Perceptron_clf, self).__init__(X_train, t_train)
         self.model_name = "Perceptron"
         self.classifier = Perceptron(max_iter=1000)
-        self.hyperparams = {
-            "penalty": [None, "l1", "l2", "elasticnet"],
-            "alpha": [1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1],
-            "eta0": [1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1]
-            }
+        self.set_hyperparams()
 
-    # good default params with no PCA
-    def set_hyperparams(self, penalty="l1", alpha=0.001, eta0=1):
-        """Set hyperparameters with single values. See sklearn doc for meaning."""
+
+    def set_hyperparams(self, penalty="l1", alpha=0.001, eta0=0.1):
+        """Set hyperparameters with single values. See sklearn doc for meaning.
+
+        Default values are for scaled data with no PCA.
+        """
         self.hyperparams["penalty"] = [penalty]
         self.hyperparams["alpha"] = [alpha]
         self.hyperparams["eta0"] = [eta0]

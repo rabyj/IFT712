@@ -1,4 +1,3 @@
-import numpy as np
 from sklearn.ensemble import RandomForestClassifier # https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html
 
 from classifier import Classifier
@@ -17,15 +16,14 @@ class RF_clf(Classifier):
         super(RF_clf, self).__init__(X_train, t_train)
         self.model_name = "Random Forest"
         self.classifier = RandomForestClassifier()
-        self.hyperparams = {
-            "criterion" : ["gini", "entropy"],
-            "n_estimators": [50, 75, 100, 200, 300, 500],
-            "max_depth": [10, 25, 50, 75, 100, 200]
-            }
+        self.set_hyperparams()
 
 
     def set_hyperparams(self, criterion="gini", n_estimators=500, max_depth=50):
-        """Set hyperparameters with single values. See sklearn doc for meaning."""
+        """Set hyperparameters with single values. See sklearn doc for meaning.
+
+        Default values are for scaled data with no PCA.
+        """
         self.hyperparams["criterion"] = [criterion]
         self.hyperparams["n_estimators"] = [n_estimators]
         self.hyperparams["max_depth"] = [max_depth]

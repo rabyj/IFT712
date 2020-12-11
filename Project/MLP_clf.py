@@ -15,7 +15,27 @@ class MLP_clf(Classifier):
         """
         super(MLP_clf, self).__init__(X_train, t_train)
         self.model_name = "Multilayer Perceptron"
-        self.classifier = MLPClassifier(max_iter=10000)
-        self.hyperparams = {"hidden_layer_sizes": [(70,10), (100,20), (50,30)],
-                            "learning_rate_init": [1e-2, 5e-2, 5e-1],
-                            "activation": ["relu", "logistic"]}
+        self.classifier = MLPClassifier(max_iter=3000)
+        self.set_hyperparams()
+
+
+    def set_hyperparams(self, hidden_layer_sizes="100", activation="relu", solver="lbfgs", alpha=10):
+        """Set hyperparameters with single values. See sklearn doc for meaning.
+
+        Default values are for scaled data with with PCA components explaining 90% of variance.
+        """
+        self.hyperparams["hidden_layer_sizes"] = [hidden_layer_sizes]
+        self.hyperparams["activation"] = [activation]
+        self.hyperparams["solver"] = [solver]
+        self.hyperparams["alpha"] = [alpha]
+
+
+    def set_hyperparams_range(self, hidden_layer_sizes, activation, solver, alpha):
+        """Set hyperparameters with ranges. See sklearn doc for meaning.
+
+        Training will fail if any parameter is not list-like.
+        """
+        self.hyperparams["hidden_layer_sizes"] = hidden_layer_sizes
+        self.hyperparams["activation"] = activation
+        self.hyperparams["solver"] = solver
+        self.hyperparams["alpha"] = alpha

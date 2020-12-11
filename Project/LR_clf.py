@@ -1,4 +1,3 @@
-import numpy as np
 from sklearn.linear_model import LogisticRegression # https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
 
 from classifier import Classifier
@@ -20,8 +19,11 @@ class LR_clf(Classifier):
         self.set_hyperparams()
 
 
-    def set_hyperparams(self, penalty="elasictnet", C=8.9, l1_ratio=1/3):
-        """Set hyperparameters with single values. See sklearn doc for meaning."""
+    def set_hyperparams(self, penalty="elasticnet", C=8.9, l1_ratio=1/3):
+        """Set hyperparameters with single values. See sklearn doc for meaning.
+
+        Default values are for scaled data with PCA components explaining 80% of variance.
+        """
         self.hyperparams["penalty"] = [penalty]
         self.hyperparams["C"] = [C]
         self.hyperparams["l1_ratio"] = [l1_ratio]

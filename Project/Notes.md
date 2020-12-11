@@ -20,12 +20,7 @@ DONE
 
 ## Clarity notes
 
-TODO
-
-- classifier :
-  - "training the datasets" does not mean the right thing. "Training on the datasets" would be more accurate.
-  - the args in the init are wrong, there are more than the actual number of parameters. The extra info should be attributes in the general class docstring.
-- Docstrings for everything
+- Naive Bayes give optimal PCA in docstring somewhere.
 
 DONE
 
@@ -33,21 +28,22 @@ DONE
 - (in models) model : model_name
 - (in models) parameters : parameters_range
 - change "test" for "valid" when applicable
+- classifier :
+  - "training the datasets" does not mean the right thing. "Training on the datasets" would be more accurate.
+  - the args in the init are wrong, there are more than the actual number of parameters. The extra info should be attributes in the general class docstring.
+- Docstrings for everything
 
 ## Usage notes
 
 TODO
 
-- CHECK IF SIGMA NEEDS TO HAVE *2 OR NOT!!!
-
 - Prediction on new data points --> IMPORTANT
 
-- One should be able to fix different hyperparameters than the ones found by the optimisation. We can't let everything be done in the init. ---> ONLY IF SOME TIME LEFT
-  - This means we need to have an attribute for each hyperparameters, and the default values would either be what we found with optimisation, or "None" (and then they need to be fixed by the user or the automatic optimisation)
-  - Getter/setter for individual hyperparameters.
-  - Training possible without grid search?
-
 DONE
+
+- One should be able to fix different hyperparameters than the ones found by the optimisation. We can't let everything be done in the init.
+
+- CHECK IF SIGMA NEEDS TO HAVE *2 OR NOT!!!
 
 - Use proper test set
 
@@ -82,48 +78,3 @@ DONE
 - What kind of results did we have with current setup? How much time did it take to run? Is k=10 cross-validation realistic or should we try k=5?
   - In general more than 90%. Perceptron around 50%.
   - All classifiers under 30s.
-
-## How hyperparams were obtained
-
-### Logistic regression
-
-(15min)
-
-First search large (100 configs k=5)
-"C" : np.linspace(0.1, 10, num=10)
-"l1_ratio" : np.linspace(0, 1, num=10)
-
-The model : Logistic Regression
-The best parameters : {'penalty': 'elasticnet', 'l1_ratio': 0.4444444444444444, 'C': 7.800000000000001}
-Training accuracy: 0.9966329966329966
-Validation accuracy: 0.9595959595959596
-Training f1-score: 0.9966014635519279
-Validation f1-score: 0.9478114478114479
-
-Second search (25 configs, k=5)
-"C" : np.linspace(1, 15, num=5),
-"l1_ratio" : np.linspace(0.4, 0.6, num=5)
-The model : Logistic Regression
-The best parameters : {'l1_ratio': 0.4, 'C': 8.0, 'penalty': 'elasticnet'}
-Training accuracy: 0.9966329966329966
-Validation accuracy: 0.9595959595959596
-Training f1-score: 0.9966014635519279
-Validation f1-score: 0.9478114478114479
-
-The model : Logistic Regression
-All grid-search validation results
-pca n=10
-0.940 (+/-0.024) for {'C': 0.8, 'l1_ratio': 0.4, 'penalty': 'elasticnet'}
-pca n=23 (explain 80% of variance)
-0.976 (+/-0.012) for {'l1_ratio': 0.4, 'penalty': 'elasticnet', 'C': 0.8}
-pca n=25
-0.978 (+/-0.010) for {'l1_ratio': 0.4, 'C': 0.8, 'penalty': 'elasticnet'}
-pca n=31 (explain 85% of variance)
-0.972 (+/-0.014) for {'C': 0.8, 'penalty': 'elasticnet', 'l1_ratio': 0.4}
-
-retest those with proper test set!!!!!!!!!!
-
-with 80/20 train/test (and n=0.8)
-and k=8 CV with that 80 (so leave-one out of each class)
-0.971 (+/-0.034) for {'C': 0.8, 'l1_ratio': 0.4, 'penalty': 'elasticnet'}
-0.975 accuracy on test set!

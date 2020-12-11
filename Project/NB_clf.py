@@ -1,4 +1,3 @@
-import numpy as np
 from sklearn.naive_bayes import GaussianNB # https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.GaussianNB.html
 
 from classifier import Classifier
@@ -17,7 +16,7 @@ class NB_clf(Classifier):
         super(NB_clf, self).__init__(X_train, t_train)
         self.model_name = "Gaussian Naive Bayes"
         self.classifier = GaussianNB()
-        self.hyperparams = {"var_smoothing": [1e-9]}
+        self.set_hyperparams()
 
 
     def set_hyperparams(self, var_smoothing=1e-9):
