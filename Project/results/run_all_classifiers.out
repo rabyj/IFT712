@@ -1,0 +1,66 @@
+-------------------------------------------------------
+Validation results
+The model : Logistic Regression
+The best parameters : {'C': 8.9, 'l1_ratio': 0.3333333333333333, 'penalty': 'elasticnet'}
+Mean accuracy and macro f1-score with 2 sigma interval on validation sets
+Accuracy: 0.987+/-0.022
+f1-score: 0.983+/-0.029
+-------------------------------------------------------
+
+Test accuracy : 0.980
+Test f1-score : 0.978
+-------------------------------------------------------
+Validation results
+The model : Perceptron
+The best parameters : {'alpha': 0.001, 'eta0': 0.1, 'penalty': 'l1'}
+Mean accuracy and macro f1-score with 2 sigma interval on validation sets
+Accuracy: 0.696+/-0.073
+f1-score: 0.626+/-0.077
+-------------------------------------------------------
+
+Test accuracy : 0.798
+Test f1-score : 0.771
+-------------------------------------------------------
+Validation results
+The model : Support Vector Machine (SVM)
+The best parameters : {'C': 5, 'gamma': 0.003, 'kernel': 'rbf'}
+Mean accuracy and macro f1-score with 2 sigma interval on validation sets
+Accuracy: 0.981+/-0.033
+f1-score: 0.975+/-0.044
+-------------------------------------------------------
+
+Test accuracy : 0.970
+Test f1-score : 0.965
+-------------------------------------------------------
+Validation results
+The model : Multilayer Perceptron
+The best parameters : {'activation': 'relu', 'alpha': 10, 'hidden_layer_sizes': 100, 'solver': 'lbfgs'}
+Mean accuracy and macro f1-score with 2 sigma interval on validation sets
+Accuracy: 0.980+/-0.027
+f1-score: 0.973+/-0.036
+-------------------------------------------------------
+
+Test accuracy : 0.980
+Test f1-score : 0.978
+-------------------------------------------------------
+Validation results
+The model : Random Forest
+The best parameters : {'criterion': 'gini', 'max_depth': 50, 'n_estimators': 500}
+Mean accuracy and macro f1-score with 2 sigma interval on validation sets
+Accuracy: 0.979+/-0.016
+f1-score: 0.971+/-0.021
+-------------------------------------------------------
+
+Test accuracy : 0.970
+Test f1-score : 0.968
+-------------------------------------------------------
+Validation results
+The model : Gaussian Naive Bayes
+The best parameters : {'var_smoothing': 1e-09}
+Mean accuracy and macro f1-score with 2 sigma interval on validation sets
+Accuracy: 0.960+/-0.038
+f1-score: 0.948+/-0.046
+-------------------------------------------------------
+
+Test accuracy : 0.965
+Test f1-score : 0.963
