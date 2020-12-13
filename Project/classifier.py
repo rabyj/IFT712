@@ -85,6 +85,17 @@ class Classifier:
         return f1_score(t, self.grid_clf.best_estimator_.predict(X), average="macro")
 
 
+    def predict(self, data):
+        """Classify new data points.
+
+        Use preprocessor to transform back into string labels if needed.
+
+        Returns:
+            array of integer labels
+        """
+        return self.grid_clf.best_estimator_.predict(data)
+
+
     def get_general_validation_results(self):
         """Return accuracy and f1-score (with std) on validation sets.
 

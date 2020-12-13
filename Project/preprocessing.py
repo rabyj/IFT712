@@ -27,8 +27,8 @@ class Preprocessor():
         self.pca = None
 
 
-    def import_data(self, path):
-        """Read CSV data into Panda dataframe.
+    def import_labeled_data(self, path):
+        """Read labeled CSV data into Panda dataframe.
 
         Args:
             path (string) : path of csv
@@ -37,6 +37,20 @@ class Preprocessor():
             self.last_data
         """
         self.last_data = pd.read_csv(path)
+
+    @staticmethod
+    def import_unlabeled_data(path):
+        """Read unlabeled CSV data into a numpy array.
+
+        Drops the "id" column.
+
+        Args:
+            path (string) : path of csv
+
+        Returns:
+            np.array of data points
+        """
+        return pd.read_csv(path).drop(["id"], axis=1)
 
 
     def encode_labels(self, use_new_encoder=False):
@@ -63,6 +77,13 @@ class Preprocessor():
 
         return X, t
 
+    def invert_encoding(self, predictions):
+        """Transform integer labels into original string labels.
+
+        Returns:
+            array of strings
+        """
+        return self.label_encoder.inverse_transform(predictions)
 
     def scale_data(self, data_df, use_new_scaler=False):
         """Standardize features by removing the (training) mean and scaling to unit variance.

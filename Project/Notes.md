@@ -34,11 +34,9 @@ DONE
 
 ## Usage notes
 
-TODO
-
-- Prediction on new data points --> IMPORTANT
-
 DONE
+
+- Classification of new data points
 
 - One should be able to fix different hyperparameters than the ones found by the optimisation. We can't let everything be done in the init.
 
@@ -71,9 +69,3 @@ DONE
   - using different scalers
 
 - Gaussian Naive Bayes : Show effect of pca. Compare effect of PCA with Perceptron!!!
-
-## Information I need
-
-- What kind of results did we have with current setup? How much time did it take to run? Is k=10 cross-validation realistic or should we try k=5?
-  - In general more than 90%. Perceptron around 50%.
-  - All classifiers under 30s.
