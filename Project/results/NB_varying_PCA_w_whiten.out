@@ -1,0 +1,9 @@
+See fig. Best result is 0.963+-0.018 at 32 components
+
+Reran :
+Mean accuracy and macro f1-score with 2 sigma interval on validation sets
+Accuracy: 0.957+/-0.047
+f1-score: 0.944+/-0.061
+Test
+Accuracy : 0.955
+f1-score : 0.953

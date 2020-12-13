@@ -1,0 +1,10 @@
+Fitting 8 folds for each of 1 candidates, totalling 8 fits
+-------------------------------------------------------
+Validation results
+The model : Gaussian Naive Bayes
+The best parameters : {'var_smoothing': 1e-09}
+Mean accuracy and macro f1-score with 2 sigma interval on validation sets
+Accuracy: 0.500+/-0.078
+f1-score: 0.422+/-0.091
+-------------------------------------------------------
+
