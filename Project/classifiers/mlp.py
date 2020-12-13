@@ -1,8 +1,8 @@
 from sklearn.neural_network import MLPClassifier # https://scikit-learn.org/stable/modules/neural_networks_supervised.html#classification
 
-from classifier import Classifier
+from classifiers.classifier import Classifier
 
-class MLP_clf(Classifier):
+class MLP(Classifier):
     """Multilayer perceptron classifier
 
     Extends parent class with hyperparameters setter on top.
@@ -13,7 +13,7 @@ class MLP_clf(Classifier):
         """Calls parent class init and
         sets model_name, classifier and hyperparams attributes.
         """
-        super(MLP_clf, self).__init__(X_train, t_train)
+        super().__init__(X_train, t_train)
         self.model_name = "Multilayer Perceptron"
         self.classifier = MLPClassifier(max_iter=5000)
         self.set_hyperparams()

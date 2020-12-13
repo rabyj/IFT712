@@ -7,12 +7,49 @@ from sklearn.exceptions import ConvergenceWarning
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
 
 from preprocessing import Preprocessor
-from LR_clf import LR_clf
-from Perceptron_clf import Perceptron_clf
-from SVM_clf import SVM_clf
-from MLP_clf import MLP_clf
-from RF_clf import RF_clf
-from NB_clf import NB_clf
+from classifiers.logistic_regression import LogisticRegression
+from classifiers.perceptron import Perceptron
+from classifiers.svm import SVM
+from classifiers.mlp import MLP
+from classifiers.random_forest import RandomForest
+from classifiers.gaussian_naive_bayes import NaiveBayes
+
+
+def run_all_classifiers():
+    """Naive demonstration of all classifiers on default settings.
+
+    Does not give optimal solutions because different PCA transformations are needed.
+    """
+    preprocessor = Preprocessor()
+    preprocessor.import_labeled_data("data/train.csv")
+
+    # encode labels and split 80/20 train/test
+    X_total, t_total = preprocessor.encode_labels(use_new_encoder=True)
+    X_train, X_test, t_train, t_test = preprocessor.train_test_split(X_total, t_total)
+
+    # transform data and overwrite non-transformed data
+    X_train = preprocessor.scale_data(X_train, use_new_scaler=True)
+    X_test = preprocessor.scale_data(X_test)
+
+    # apply pca
+    X_train = preprocessor.apply_pca(X_train, use_new_pca=True)
+    X_test = preprocessor.apply_pca(X_test)
+
+    # init classifiers
+    clfs = [
+        clf(X_train, t_train)
+        for clf in
+        [LogisticRegression, Perceptron, SVM, MLP, RandomForest, NaiveBayes]
+        ]
+
+    # training and cross-validation on default hyperparameters
+    for clf in clfs:
+
+        clf.optimize_hyperparameters()
+        clf.display_general_validation_results()
+        print("Test accuracy : {:.03f}".format(clf.get_accuracy(X_test, t_test)))
+        print("Test f1-score : {:.03f}".format(clf.get_f1_score(X_test, t_test)))
+
 
 def test_PCA(preprocessor, X_train_scaled, t_train):
     """Code to create some figure for PCA results."""
@@ -23,7 +60,7 @@ def test_PCA(preprocessor, X_train_scaled, t_train):
 
         X_train = preprocessor.apply_pca(X_train_scaled, use_new_pca=True, n_components=n_components, whiten=False)
 
-        clf = Perceptron_clf(X_train, t_train)
+        clf = Perceptron(X_train, t_train)
         clf.optimize_hyperparameters()
         acc, acc_std, _, _ = clf.get_general_validation_results()
         scores.append((acc, acc_std))
@@ -53,7 +90,7 @@ def make_new_predictions(path, preprocessor, clf):
 
 
 def main():
-    """Run general parameter search and print results for each classifier."""
+    """Do something with the project code! Have fun :) """
 
     preprocessor = Preprocessor()
     preprocessor.import_labeled_data("data/train.csv")
@@ -69,7 +106,7 @@ def main():
     X_train = preprocessor.apply_pca(X_train_scaled, use_new_pca=True, n_components=27, whiten=False)
     X_test = preprocessor.apply_pca(X_test_scaled, use_new_pca=False)
 
-    clf = NB_clf(X_train, t_train)
+    clf = NaiveBayes(X_train, t_train)
     clf.optimize_hyperparameters()
     clf.display_general_validation_results()
     clf.display_cv_results()

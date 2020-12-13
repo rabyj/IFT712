@@ -7,6 +7,7 @@ class Classifier:
 
     - Optimizes hyper-parameters and display results
     - Computes accuracy and f1-score on given datasets
+    - Make predictions on new data.
 
     Args :
         X_train (np.array) : training features

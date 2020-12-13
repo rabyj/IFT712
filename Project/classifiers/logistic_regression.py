@@ -1,8 +1,8 @@
-from sklearn.linear_model import LogisticRegression # https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
+from sklearn.linear_model import LogisticRegression as sk_lr# https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
 
-from classifier import Classifier
+from classifiers.classifier import Classifier
 
-class LR_clf(Classifier):
+class LogisticRegression(Classifier):
     """Logistic Regression classifier
 
     Extends parent class with hyperparameters setter on top.
@@ -13,9 +13,9 @@ class LR_clf(Classifier):
         """Calls parent class init and
         sets model_name, classifier and hyperparams attributes.
         """
-        super(LR_clf, self).__init__(X_train, t_train)
+        super().__init__(X_train, t_train)
         self.model_name = "Logistic Regression"
-        self.classifier = LogisticRegression(solver="saga", multi_class="multinomial", max_iter=5000)
+        self.classifier = sk_lr(solver="saga", multi_class="multinomial", max_iter=5000)
         self.set_hyperparams()
 
 

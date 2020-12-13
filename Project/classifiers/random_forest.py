@@ -1,8 +1,8 @@
 from sklearn.ensemble import RandomForestClassifier # https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html
 
-from classifier import Classifier
+from classifiers.classifier import Classifier
 
-class RF_clf(Classifier):
+class RandomForest(Classifier):
     """Random Forest classifier
 
     Extends parent class with hyperparameters setter on top.
@@ -13,7 +13,7 @@ class RF_clf(Classifier):
         """Calls parent class init and
         sets model_name, classifier and hyperparams attributes.
         """
-        super(RF_clf, self).__init__(X_train, t_train)
+        super().__init__(X_train, t_train)
         self.model_name = "Random Forest"
         self.classifier = RandomForestClassifier()
         self.set_hyperparams()

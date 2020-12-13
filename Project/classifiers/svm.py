@@ -1,8 +1,8 @@
 from sklearn.svm import SVC # https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html
 
-from classifier import Classifier
+from classifiers.classifier import Classifier
 
-class SVM_clf(Classifier):
+class SVM(Classifier):
     """Support Vector Machine classifier.
 
     Extends parent class with hyperparameters setter on top.
@@ -13,7 +13,7 @@ class SVM_clf(Classifier):
         """Calls parent class init and
         sets model_name, classifier and hyperparams attributes.
         """
-        super(SVM_clf, self).__init__(X_train, t_train)
+        super().__init__(X_train, t_train)
         self.model_name = "Support Vector Machine (SVM)"
         self.classifier = SVC(max_iter=10000)
         self.set_hyperparams()

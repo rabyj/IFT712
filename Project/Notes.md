@@ -2,12 +2,8 @@
 
 ## Style notes (from pylint warnings, to respect pep8)
 
-TODO
-
-- It's okay and even better to have more expressive class names. Explicit is better than implicit. (see [PEP 20 -- The Zen of Python](https://www.python.org/dev/peps/pep-0020/))
-
 DONE
-
+- More expressive class names. Explicit is better than implicit. (see [PEP 20 -- The Zen of Python](https://www.python.org/dev/peps/pep-0020/))
 - Don't leave trailing whitespace (I fixed it for now with quick use of an extension)
 - Always leave a blank newline a end of files
 - Either use snake_case or PascalCase naming style, don't use both --> snake_case

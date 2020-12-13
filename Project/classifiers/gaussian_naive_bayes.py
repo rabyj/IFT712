@@ -1,8 +1,8 @@
 from sklearn.naive_bayes import GaussianNB # https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.GaussianNB.html
 
-from classifier import Classifier
+from classifiers.classifier import Classifier
 
-class NB_clf(Classifier):
+class NaiveBayes(Classifier):
     """Gaussian Naive Bayes classifier
 
     Works better with uncorrelated features, apply PCA on data beforehand.
@@ -15,7 +15,7 @@ class NB_clf(Classifier):
         """Calls parent class init and
         sets model_name, classifier and hyperparams attributes.
         """
-        super(NB_clf, self).__init__(X_train, t_train)
+        super().__init__(X_train, t_train)
         self.model_name = "Gaussian Naive Bayes"
         self.classifier = GaussianNB()
         self.set_hyperparams()

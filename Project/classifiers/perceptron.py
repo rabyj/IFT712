@@ -1,8 +1,8 @@
-from sklearn.linear_model import Perceptron # https://scikit-learn.org/stable/modules/linear_model.html#perceptron
+from sklearn.linear_model import Perceptron as sk_perceptron # https://scikit-learn.org/stable/modules/linear_model.html#perceptron
 
-from classifier import Classifier
+from classifiers.classifier import Classifier
 
-class Perceptron_clf(Classifier):
+class Perceptron(Classifier):
     """Perceptron classifier
 
     Extends parent class with hyperparameters setter on top.
@@ -13,9 +13,9 @@ class Perceptron_clf(Classifier):
         """Calls parent class init and
         sets model_name, classifier and hyperparams attributes.
         """
-        super(Perceptron_clf, self).__init__(X_train, t_train)
+        super().__init__(X_train, t_train)
         self.model_name = "Perceptron"
-        self.classifier = Perceptron(max_iter=1000)
+        self.classifier = sk_perceptron(max_iter=1000)
         self.set_hyperparams()
 
 
