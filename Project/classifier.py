@@ -87,7 +87,7 @@ class Classifier:
 
     def get_general_validation_results(self):
         """Return accuracy and f1-score (with std) on validation sets.
-        
+
         Returns:
             valid_acc (float)
             valid_acc_std (float)
