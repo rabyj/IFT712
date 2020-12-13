@@ -5,6 +5,8 @@ from classifier import Classifier
 class NB_clf(Classifier):
     """Gaussian Naive Bayes classifier
 
+    Works better with uncorrelated features, apply PCA on data beforehand.
+
     Extends parent class with hyperparameters setter on top.
 
     See parent class "Classifier" docstring.

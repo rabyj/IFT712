@@ -15,7 +15,7 @@ class LR_clf(Classifier):
         """
         super(LR_clf, self).__init__(X_train, t_train)
         self.model_name = "Logistic Regression"
-        self.classifier = LogisticRegression(solver="saga", multi_class="multinomial", max_iter=1000)
+        self.classifier = LogisticRegression(solver="saga", multi_class="multinomial", max_iter=5000)
         self.set_hyperparams()
 
 

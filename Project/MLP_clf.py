@@ -15,14 +15,14 @@ class MLP_clf(Classifier):
         """
         super(MLP_clf, self).__init__(X_train, t_train)
         self.model_name = "Multilayer Perceptron"
-        self.classifier = MLPClassifier(max_iter=3000)
+        self.classifier = MLPClassifier(max_iter=5000)
         self.set_hyperparams()
 
 
-    def set_hyperparams(self, hidden_layer_sizes="100", activation="relu", solver="lbfgs", alpha=10):
+    def set_hyperparams(self, hidden_layer_sizes=100, activation="relu", solver="lbfgs", alpha=10):
         """Set hyperparameters with single values. See sklearn doc for meaning.
 
-        Default values are for scaled data with with PCA components explaining 90% of variance.
+        Default values are for scaled data with PCA components explaining 90% of variance.
         """
         self.hyperparams["hidden_layer_sizes"] = [hidden_layer_sizes]
         self.hyperparams["activation"] = [activation]

@@ -20,10 +20,9 @@ DONE
 
 ## Clarity notes
 
-- Naive Bayes give optimal PCA in docstring somewhere.
-
 DONE
 
+- Naive Bayes mention PCA in docstring somewhere.
 - preprocessing : "trainTestSplit" not an ideal function names. Could be called "TrainValidSplit".
 - (in models) model : model_name
 - (in models) parameters : parameters_range
@@ -65,15 +64,13 @@ DONE
 
 - don't forget to mention what we could have done more
   - see if applying pca by set of features affect results
+  - properly integrating PCA to CV (particularly w Perceptron)
   - check for outliers
-  - apply pca without "whiten"
   - [Is it actually fine to perform unsupervised feature selection before cross-validation?](https://stats.stackexchange.com/questions/239898/is-it-actually-fine-to-perform-unsupervised-feature-selection-before-cross-valid)
   - [PCA and the train/test split](https://stats.stackexchange.com/questions/55718/pca-and-the-train-test-split)
   - using different scalers
 
-- Gaussian Naive Bayes : Show effect of pca whiten=false? Compare effect of PCA with Perceptron!!!
-
-- don't forget to verify is results are same w MLP when whiten=False. When PCA is used, specify details (whiten/n_components, so do it for LR)
+- Gaussian Naive Bayes : Show effect of pca. Compare effect of PCA with Perceptron!!!
 
 ## Information I need
 

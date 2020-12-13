@@ -1,3 +1,5 @@
+PCA explaining 90% of variance (44 components) - whiten=True
+
 Fitting 8 folds for each of 16 candidates, totalling 128 fits
 -------------------------------------------------------
 Validation results
@@ -28,6 +30,20 @@ All grid-search validation results.
 13  lbfgs        10          relu             100                      0.984848            0.007142           0.979798            0.009523         
 14  adam         10          relu             150                      0.964646            0.012371           0.952862            0.016495         
 15  lbfgs        10          relu             150                      0.982323            0.009780           0.976431            0.013040         
+-------------------------------------------------------
+
+Test accuracy : 0.980
+Test f1-score : 0.978
+
+
+Reran with optimized hyperparameters and whiten=False (takes more time to converge, not better)
+-------------------------------------------------------
+Validation results
+The model : Multilayer Perceptron
+The best parameters : {'activation': 'relu', 'alpha': 10, 'hidden_layer_sizes': 100, 'solver': 'lbfgs'}
+Mean accuracy and macro f1-score with 2 sigma interval on validation sets
+Accuracy: 0.984+/-0.025
+f1-score: 0.978+/-0.033
 -------------------------------------------------------
 
 Test accuracy : 0.980

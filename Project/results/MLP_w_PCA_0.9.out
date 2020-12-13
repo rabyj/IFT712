@@ -1,3 +1,5 @@
+PCA explaining 90% of variance (44 components) - whiten=true
+
 Fitting 8 folds for each of 48 candidates, totalling 384 fits
 -------------------------------------------------------
 Validation results

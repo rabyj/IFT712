@@ -1,3 +1,6 @@
+PCA explaining 80% of variance (23 components)
+
+withen=True
 Fitting 8 folds for each of 100 candidates, totalling 800 fits
 -------------------------------------------------------
 Validation results
@@ -112,6 +115,19 @@ All grid-search validation results.
 97  0.777778       10      elasticnet    0.977273            0.011007           0.969697            0.014676         
 98  0.888889       10      elasticnet    0.972222            0.014940           0.963384            0.019005         
 99  1              10      elasticnet    0.969697            0.015971           0.960227            0.020376         
+-------------------------------------------------------
+
+Test accuracy : 0.980
+Test f1-score : 0.978
+
+Whiten=False for best found hyperparameters
+-------------------------------------------------------
+Validation results
+The model : Logistic Regression
+The best parameters : {'C': 8.9, 'l1_ratio': 0.3333333333333333, 'penalty': 'elasticnet'}
+Mean accuracy and macro f1-score with 2 sigma interval on validation sets
+Accuracy: 0.987+/-0.022
+f1-score: 0.983+/-0.029
 -------------------------------------------------------
 
 Test accuracy : 0.980
