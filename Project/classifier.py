@@ -48,7 +48,7 @@ class Classifier:
         """
         scores=["accuracy", "f1_macro"]
         grid = GridSearchCV(
-            self.classifier, self.hyperparams, scoring=scores, n_jobs=-1, verbose=1, cv=n_fold, refit=metric
+            self.classifier, self.hyperparams, scoring=scores, n_jobs=-1, verbose=0, cv=n_fold, refit=metric
             )
         grid.fit(self.X_train, self.t_train)
         self.grid_clf = grid
@@ -85,8 +85,15 @@ class Classifier:
         return f1_score(t, self.grid_clf.best_estimator_.predict(X), average="macro")
 
 
-    def display_general_results(self):
-        """Display optimised results with 95% confidence interval (2sigma)"""
+    def get_general_validation_results(self):
+        """Return accuracy and f1-score (with std) on validation sets.
+        
+        Returns:
+            valid_acc (float)
+            valid_acc_std (float)
+            valid_f1 (float)
+            valid_f1_std (float)
+        """
         results = self.grid_clf.cv_results_
         i = self.grid_clf.best_index_
 
@@ -96,13 +103,21 @@ class Classifier:
         valid_f1 = results["mean_test_f1_macro"][i]
         valid_f1_std = results["std_test_f1_macro"][i]
 
+        return valid_acc, valid_acc_std, valid_f1, valid_f1_std
+
+
+    def display_general_validation_results(self):
+        """Display optimised results with 95% confidence interval (2sigma)"""
+
+        acc, acc_std, f1, f1_std = self.get_general_validation_results()
+
         print("-------------------------------------------------------")
         print("Validation results")
         print("The model : {}".format(self.model_name))
         print("The best parameters : {}".format(self.grid_clf.best_params_))
         print("Mean accuracy and macro f1-score with 2 sigma interval on validation sets")
-        print("Accuracy: {:0.3f}+/-{:0.03f}".format(valid_acc, valid_acc_std*2))
-        print("f1-score: {:0.3f}+/-{:0.03f}".format(valid_f1, valid_f1_std*2))
+        print("Accuracy: {:0.3f}+/-{:0.03f}".format(acc, acc_std*2))
+        print("f1-score: {:0.3f}+/-{:0.03f}".format(f1, f1_std*2))
         print("-------------------------------------------------------\n")
 
 

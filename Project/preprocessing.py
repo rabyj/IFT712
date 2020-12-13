@@ -86,16 +86,18 @@ class Preprocessor():
         return scaled_df
 
 
-    def apply_pca(self, data, n_components=0.8, use_new_pca=False):
-        """Apply PCA on the data.
+    def apply_pca(self, data, use_new_pca=False, n_components=0.8, whiten=False):
+        """Apply PCA on the data. Uses whiten=True when computing new PCA.
 
         Args:
             data (pd dframe) : Data to transform.
+            use_new_pca (bool) : If true, compute new PCA with n_components from data
+                                     and set it as instance attribute "pca".
             n_components (int or float):
                 If int, number of PCA components to keep if computing a new PCA.
                 If float between 0 and 1, components needed to explain percentage of variance specified.
-            use_new_pca (bool) : If true, compute new PCA with n_components from data
-                                     and set it as instance attribute "pca".
+            whiten (bool) : If True, uses whitening during PCA computation. See sklearn doc.
+
         Returns:
             Transformed features (pd dframe)
         """
@@ -104,9 +106,8 @@ class Preprocessor():
             use_new_pca = True
 
         if use_new_pca:
-            pca = PCA(n_components=n_components, whiten=True)
+            pca = PCA(n_components=n_components, whiten=whiten)
             self.pca = pca.fit(data)
-
 
         return pd.DataFrame(self.pca.transform(data))
 

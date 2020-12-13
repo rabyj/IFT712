@@ -73,6 +73,8 @@ DONE
 
 - Gaussian Naive Bayes : Show effect of pca whiten=false? Compare effect of PCA with Perceptron!!!
 
+- don't forget to verify is results are same w MLP when whiten=False. When PCA is used, specify details (whiten/n_components, so do it for LR)
+
 ## Information I need
 
 - What kind of results did we have with current setup? How much time did it take to run? Is k=10 cross-validation realistic or should we try k=5?
