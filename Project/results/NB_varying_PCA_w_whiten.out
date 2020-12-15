@@ -1,4 +1,4 @@
-See fig. Best result is 0.963+-0.018 at 32 components
+See fig. Best result is 0.963+-0.018 (1 sigma) at 32 components
 
 Reran :
 Mean accuracy and macro f1-score with 2 sigma interval on validation sets

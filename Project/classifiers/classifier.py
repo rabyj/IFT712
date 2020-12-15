@@ -32,7 +32,7 @@ class Classifier:
         self.model_name = None
 
 
-    def optimize_hyperparameters(self, n_fold=8, metric="accuracy"):
+    def optimize_hyperparameters(self, n_fold=8, metric="accuracy", verbose=1):
         """Find the best parameters for the classifier through grid-search and
         StratifiedKFold cross-validation.
 
@@ -46,10 +46,17 @@ class Classifier:
         Args:
             n_fold (int) : Number of folds for StratifiedKFold.
             metric (string) : Metric to optimize on.
+            verbose (int) : Level of verbosity. See sklearn GridSearchCV for details
         """
         scores=["accuracy", "f1_macro"]
         grid = GridSearchCV(
-            self.classifier, self.hyperparams, scoring=scores, n_jobs=-1, verbose=0, cv=n_fold, refit=metric
+            self.classifier,
+            self.hyperparams,
+            scoring=scores,
+            n_jobs=-1,
+            verbose=verbose,
+            cv=n_fold,
+            refit=metric
             )
         grid.fit(self.X_train, self.t_train)
         self.grid_clf = grid
@@ -70,7 +77,7 @@ class Classifier:
         Returns:
             accuracy (float)
         """
-        return accuracy_score(t, self.grid_clf.best_estimator_.predict(X))
+        return accuracy_score(t, self.predict(X))
 
 
     def get_f1_score(self, X, t):
@@ -83,7 +90,7 @@ class Classifier:
         Returns:
             f1_score (float)
         """
-        return f1_score(t, self.grid_clf.best_estimator_.predict(X), average="macro")
+        return f1_score(t, self.predict(X), average="macro")
 
 
     def predict(self, data):

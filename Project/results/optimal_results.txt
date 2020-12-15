@@ -1,0 +1,119 @@
+LOGISTIC REGRESSION
+
+withen=True
+Fitting 8 folds for each of 100 candidates, totalling 800 fits
+-------------------------------------------------------
+Validation results
+The model : Logistic Regression
+The best parameters : {'l1_ratio': 0.3333333333333333, 'C': 8.9, 'penalty': 'elasticnet'}
+Mean accuracy and macro f1-score with 2 sigma interval on validation sets
+Accuracy: 0.982+/-0.017
+f1-score: 0.976+/-0.022
+Test accuracy : 0.980
+Test f1-score : 0.978
+-------------------------------------------------------
+Whiten=False for best found hyperparameters
+Validation results
+The model : Logistic Regression
+The best parameters : {'C': 8.9, 'l1_ratio': 0.3333333333333333, 'penalty': 'elasticnet'}
+Mean accuracy and macro f1-score with 2 sigma interval on validation sets
+Accuracy: 0.987+/-0.022
+f1-score: 0.983+/-0.029
+Test accuracy : 0.980
+Test f1-score : 0.978
+-------------------------------------------------------
+
+
+MULTILAYER PERCEPTRON
+
+(+48 candidates, slightly improved validation scores upon them)
+Fitting 8 folds for each of 16 candidates, totalling 128 fits
+-------------------------------------------------------
+Validation results
+The model : Multilayer Perceptron
+The best parameters : {'solver': 'lbfgs', 'alpha': 10, 'activation': 'relu', 'hidden_layer_sizes': 100}
+Mean accuracy and macro f1-score with 2 sigma interval on validation sets
+Accuracy: 0.985+/-0.014
+f1-score: 0.980+/-0.019
+Test accuracy : 0.980
+Test f1-score : 0.978
+-------------------------------------------------------
+
+
+GAUSSIAN NAIVE BAYES
+
+Fitting 8 folds for each of 1 candidates, totalling 8 fits
+-------------------------------------------------------
+Validation results (NO PCA)
+The model : Gaussian Naive Bayes
+The best parameters : {'var_smoothing': 1e-09}
+Mean accuracy and macro f1-score with 2 sigma interval on validation sets
+Accuracy: 0.500+/-0.078
+f1-score: 0.422+/-0.091
+Test accuracy : 0.566
+Test f1-score : 0.533
+-------------------------------------------------------
+Validation results (WITH PCA=27, no whiten)
+The model : Gaussian Naive Bayes
+The best parameters : {'var_smoothing': 1e-09}
+Mean accuracy and macro f1-score with 2 sigma interval on validation sets
+Accuracy: 0.958+/-0.046
+f1-score: 0.946+/-0.058
+Test accuracy : 0.960
+Test f1-score : 0.957
+-------------------------------------------------------
+
+
+PERCEPTRON
+
+Fitting 8 folds for each of 144 candidates, totalling 1152 fits
+-------------------------------------------------------
+Validation results
+The model : Perceptron
+The best parameters : {'eta0': 0.1, 'alpha': 0.001, 'penalty': 'l1'}
+Mean accuracy and macro f1-score with 2 sigma interval on validation sets
+Accuracy: 0.885+/-0.095
+f1-score: 0.851+/-0.120
+Test accuracy : 0.899
+Test f1-score : 0.887
+-------------------------------------------------------
+
+
+RANDOM FOREST
+
+Fitting 8 folds for each of 72 candidates, totalling 576 fits
+-------------------------------------------------------
+Validation results
+The model : Random Forest
+The best parameters : {'max_depth': 50, 'criterion': 'gini', 'n_estimators': 500}
+Mean accuracy and macro f1-score with 2 sigma interval on validation sets
+Accuracy: 0.982+/-0.032
+f1-score: 0.976+/-0.042
+Test accuracy : 0.995
+Test f1-score : 0.995
+-------------------------------------------------------
+
+
+SUPPORT VECTOR MACHINE
+
+Fitting 8 folds for each of 42 candidates, totalling 336 fits
+-------------------------------------------------------
+Validation results
+The model : Support Vector Machine (SVM)
+The best parameters : {'gamma': 0.0031622776601683794, 'C': 5, 'kernel': 'rbf'}
+Mean accuracy and macro f1-score with 2 sigma interval on validation sets
+Accuracy: 0.987+/-0.020
+f1-score: 0.983+/-0.026
+Test accuracy : 0.980
+Test f1-score : 0.978
+-------------------------------------------------------
+Parameters set : {'kernel': 'rbf', 'C': 5, 'gamma': 0.003}
+-------------------------------------------------------
+Validation results
+The model : Support Vector Machine (SVM)
+Mean accuracy and macro f1-score with 2 sigma interval on validation sets
+Accuracy: 0.990+/-0.014
+f1-score: 0.987+/-0.019
+Test accuracy : 0.985
+Test f1-score : 0.984
+-------------------------------------------------------

@@ -50,6 +50,8 @@ DONE
 
 ## Report/analysis notes
 
+- MAKE REPO PUBLIC!!!!
+
 - We need to show as much as we can what PCA does in the report, meaning we need more data on its effects. We need to show we pretreated the data in a smart way.
   - For example, what's a more optimal amount of principal components? When does it increase performance and when does it decrease it, and does it affect each classifier the same way? And Why? --> OUI
   - What happens if we apply the PCA on only some sets of features, and not all features together (after all, each data point is 3 sets of 64 values, and each set has a different meaning) (someone on Kaggle did some PCA analysis, we can use that as inspiration) --> EXTRA IF WE HAVE MUCH TIME LEFT
@@ -63,5 +65,6 @@ DONE
   - [Is it actually fine to perform unsupervised feature selection before cross-validation?](https://stats.stackexchange.com/questions/239898/is-it-actually-fine-to-perform-unsupervised-feature-selection-before-cross-valid)
   - [PCA and the train/test split](https://stats.stackexchange.com/questions/55718/pca-and-the-train-test-split)
   - using different scalers
+  - technically we should apply data transformations from train to valid, not use valid for computing transformations
 
 - Gaussian Naive Bayes : Show effect of pca. Compare effect of PCA with Perceptron!!!
